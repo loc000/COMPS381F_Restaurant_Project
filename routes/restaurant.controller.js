@@ -108,18 +108,9 @@ router.post('/', function (req, res) {
         }
     });
 });
-router.get('/name/:name', function (req, res, next) {
+
+router.get('//:name', function (req, res, next) {
     exports.find_with_field(req, {name: req.params.name}, function (restaurant_array) {
-        res.end(JSON.stringify(restaurant_array));
-    });
-});
-router.get('/borough/:borough', function (req, res, next) {
-    exports.find_with_field(req, {borough: req.params.borough}, function (restaurant_array) {
-        res.end(JSON.stringify(restaurant_array));
-    });
-});
-router.get('/cuisine/:cuisine', function (req, res, next) {
-    exports.find_with_field(req, {cuisine: req.params.cuisine}, function (restaurant_array) {
         res.end(JSON.stringify(restaurant_array));
     });
 });

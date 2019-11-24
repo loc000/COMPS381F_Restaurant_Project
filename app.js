@@ -3,14 +3,20 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var session = require('cookie-session');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var restaurantRouter = require('./routes/api/restaurant.controller');
+var restaurantRouter = require('./routes/restaurant.controller');
+var userRouter = require('./routes/user.controller');
 
 const getDb = require("./models/database").getDb;
 
 var app = express();
+app.use(session({
+    name: 'session',
+    keys: ['key1','key2']
+}));
 app.use(function (req, res, next) {
     req.db = getDb();
     next();
