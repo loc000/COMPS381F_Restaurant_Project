@@ -3,25 +3,6 @@ var router = express.Router();
 var ObjectID = require('mongodb').ObjectID;
 
 
-router.get('/', function (req, res, next) {
-    findAll(req,res);
-});
-router.get('/name/:name', function (req, res, next) {
-    find_with_field(req,res,name,req.name);
-    next();
-});
-router.get('/borough/:borough', function (req, res, next) {
-    find_with_field(req,res,borough,req.borough);
-    next();
-});
-router.get('/cuisine/:cuisine', function (req, res, next) {
-    find_with_field(req,res,cuisine,req.cuisine);
-    next();
-});
-router.post('/', function (req, res, next) {
-    create(req,res);
-    next();
-});
 
 exports.create = (req, res) => {
     var myobj = {
@@ -69,3 +50,23 @@ exports.delete = (req, res) => {
 
 };
 module.exports = router;
+
+router.get('/', function (req, res, next) {
+    exports.findAll(req,res);
+});
+router.get('/name/:name', function (req, res, next) {
+    exports.find_with_field(req,res,name,req.name);
+    next();
+});
+router.get('/borough/:borough', function (req, res, next) {
+    exports.find_with_field(req,res,borough,req.borough);
+    next();
+});
+router.get('/cuisine/:cuisine', function (req, res, next) {
+    exports.find_with_field(req,res,cuisine,req.cuisine);
+    next();
+});
+router.post('/', function (req, res, next) {
+    exports.create(req,res);
+    next();
+});
