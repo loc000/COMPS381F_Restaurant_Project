@@ -1,10 +1,10 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="bin\www" type="NodeJSConfigurationType" path-to-js-file="bin/www" working-dir="$PROJECT_DIR$">
     <envs>
-      <env name="DEBUG" value="comps381f-restaurant-project:*" />
+      <env name="MONGODB_URI" value="mongodb://heroku_cd0kmj20:469bllks5bhmomq66lp0jg21c4@ds339968.mlab.com:39968/heroku_cd0kmj20" />
     </envs>
     <EXTENSION ID="com.jetbrains.nodejs.run.NodeJSStartBrowserRunConfigurationExtension">
-      <browser start="true" url="http://localhost:5000/" />
+      <browser url="http://localhost:5000/" />
     </EXTENSION>
     <method v="2" />
   </configuration>

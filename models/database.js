@@ -12,7 +12,7 @@ function initDb(callback) {
         return callback(null, _db);
     }
     const MONGO_URL = process.env.MONGODB_URI;
-    client.connect(MONGO_URL, function (err, db) {
+    client.connect(MONGO_URL,  { useUnifiedTopology: true },function (err, db) {
         if (err) {
             return callback(err);
         }
