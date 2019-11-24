@@ -519,3 +519,5 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
+public/images/
+public/javascripts/
