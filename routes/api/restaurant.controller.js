@@ -3,7 +3,7 @@ var router = express.Router();
 var ObjectID = require('mongodb').ObjectID;
 
 
-exports.create = (req, restaurantObj, callback) => {
+exports.create = function (req, restaurantObj, callback) {
     var myobj = {
         restaurant_id: new ObjectID(),
         name: restaurantObj.name,
@@ -23,49 +23,52 @@ exports.create = (req, restaurantObj, callback) => {
     if (myobj.owner === undefined || myobj.name === undefined) {
         console.log("Error: name and owner are mandatory; other attributes are optional");
         callback({result: {n: 0}});
-        return;
+    }else {
+        req.db.collection("restaurant").insertOne(myobj, function (err, res) {
+            if (err) throw err;
+            callback(res)
+        });
     }
-    req.db.collection("restaurant").insertOne(myobj, function (err, res) {
-        if (err) throw err;
-        callback(res)
-    });
 };
 
 
 // Retrieve and return all notes from the database.
-exports.findAll = (req, res) => {
+exports.findAll = function (req, callback) {
     req.db.collection("restaurant").find({}).toArray(function (err, res2) {
         if (err) throw err;
-        res.send(JSON.stringify(res2));
+        callback(res2);
     });
 };
 
 // Find a single note with a noteId
-exports.findOne = (req, res) => {
-
-};
-// Find a single note with a noteId
-exports.find_with_field = (req, res, field) => {
-
+exports.find_with_field = function (req, query, callback) {
+    req.db.collection("restaurant").find(query).toArray(function (err, res2) {
+        if (err) throw err;
+        callback(res2);
+    });
 };
 
 // Update a note identified by the noteId in the request
-exports.update = (req, res) => {
+exports.update = function (req, res) {
 
 };
 
 // Delete a note with the specified noteId in the request
-exports.delete = (req, res) => {
+exports.delete = function (req, res) {
 
 };
 module.exports = router;
 
-router.get('/', function (req, res, next) {
-    exports.findAll(req, res);
+// router.post('/', function (req, res, next) {
+//     exports.create(req, res);
+// });
+router.get('/', function (req, res) {
+    exports.findAll(req, function (restaurant_array) {
+        res.json(restaurant_array);
+    });
 });
-router.post('/', function (req, res, next) {
+router.post('/', function (req, res) {
     // exports.create(req, res);
-    console.log(req);
     var myobj = {
         name: req.body.name,
         borough: req.body.borough,
@@ -91,25 +94,26 @@ router.post('/', function (req, res, next) {
     // }
     exports.create(req, myobj, function (db_res) {
         if (db_res.result.n === 1) {
-            res.end(`{status: ok,_id: ${db_res.ops[0]._id}}`);
+            res.send(`{status: ok,_id: ${db_res.ops[0]._id}}`);
         } else {
-            res.end("{status:failed}");
+            res.status ( 400);
+            res.send("{status:failed}");
+            return;
         }
     });
 });
 router.get('/name/:name', function (req, res, next) {
-    exports.find_with_field(req, res, name, req.name);
-    next();
+    exports.find_with_field(req, {name:req.params.name},function (restaurant_array) {
+        res.end(JSON.stringify(restaurant_array));
+    });
 });
 router.get('/borough/:borough', function (req, res, next) {
-    exports.find_with_field(req, res, borough, req.borough);
-    next();
+    exports.find_with_field(req, {borough:req.params.borough},function (restaurant_array) {
+        res.end(JSON.stringify(restaurant_array));
+    });
 });
 router.get('/cuisine/:cuisine', function (req, res, next) {
-    exports.find_with_field(req, res, cuisine, req.cuisine);
-    next();
-});
-router.post('/', function (req, res, next) {
-    exports.create(req, res);
-    next();
+    exports.find_with_field(req, {cuisine:req.params.cuisine},function (restaurant_array) {
+        res.end(JSON.stringify(restaurant_array));
+    });
 });
