@@ -18,7 +18,6 @@ router.get('/', function (req, res, next) {
     req.db.collection("restaurant").insertOne(myobj, function (err, res) {
         if (err) throw err;
         console.log("1 document inserted");
-        db.close();
     });
     res.send('respond with a resource');
 });
