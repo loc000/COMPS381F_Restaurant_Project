@@ -99,5 +99,7 @@ router.post('/login', function (req, res) {
 });
 router.get('/logout', function (req, res, next) {
     req.session = null;
+    res.status(200);
+    res.json({logout:"success"});
 
 });
