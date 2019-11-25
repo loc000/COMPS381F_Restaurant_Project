@@ -239,5 +239,12 @@
 
     // SideNav Initialization
     $(".button-collapse").sideNav();
-
+    $(function () {
+        $("#modalRegisterForm").on('hide.bs.modal', function(){
+            location.reload();
+        });
+        $("#modalLoginForm").on('hide.bs.modal', function(){
+            location.reload();
+        });
+    })
 </script>

@@ -193,10 +193,9 @@
                             </div>
                         </li>
                     <% }else{ %>
-                        <a class="nav-link waves-effect waves-light dark-grey-text font-weight-bold" href="#"><i
-                                    class="fas fa-cog blue-text"></i> Register</a>
-                        <a class="nav-link waves-effect waves-light dark-grey-text font-weight-bold" href="#"><i
-                                    class="fas fa-cog blue-text"></i> Login</a>
+
+                        <a class="nav-link waves-effect waves-light dark-grey-text font-weight-bold" href="#" data-toggle="modal" data-target="#modalLoginForm"> Login</a>
+                        <a class="nav-link waves-effect waves-light dark-grey-text font-weight-bold" href="#" data-toggle="modal" data-target="#modalRegisterForm" > Sign up</a>
                     <% } %>
 
                 </ul>
@@ -209,3 +208,5 @@
     <!-- Navbar -->
 </header>
 <!-- Navigation -->
+<%include login.ejs%>
+<%include signup.ejs%>

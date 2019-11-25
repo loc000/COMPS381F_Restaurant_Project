@@ -78,6 +78,12 @@ router.post('/login', function (req, res, next) {
         if (user_array.length > 0) {
             console.log(user_array);
             req.session.userid = myobj.userid;
+            res.status(200);
+            res.json({login: "success"})
+        } else {
+            req.session.userid = null;
+            res.status(400);
+            res.json({login: "fail"})
         }
     });
 });
