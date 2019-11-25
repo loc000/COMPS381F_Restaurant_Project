@@ -15,13 +15,11 @@
 <link href="/stylesheets/mdb.min.css" rel="stylesheet">
 
 <style type="text/css">
-    .multiple-select-dropdown li [type=checkbox] + label {
+    .multiple-select-dropdown li [type=checkbox]+label {
 
         height: 1rem;
 
     }
-
-
 </style>
 <!-- Navigation -->
 <header>
@@ -33,7 +31,7 @@
         <li>
             <div class="logo-wrapper waves-light">
                 <a href="#"><img src="https://mdbootstrap.com/img/logo/mdb-transparent.png"
-                                 class="img-fluid flex-center"></a>
+                        class="img-fluid flex-center"></a>
             </div>
         </li>
         <!-- Logo -->
@@ -65,7 +63,7 @@
                 <li>
 
                     <a class="collapsible-header waves-effect arrow-r"><i class="fas fa-shopping-cart"></i> Cart page<i
-                                class="fas fa-angle-down rotate-icon"></i>
+                            class="fas fa-angle-down rotate-icon"></i>
                     </a>
 
                     <div class="collapsible-body">
@@ -79,8 +77,8 @@
                 </li>
 
                 <li>
-                    <a class="collapsible-header waves-effect arrow-r"><i class="far fa-hand-pointer"></i> Category page<i
-                                class="fas fa-angle-down rotate-icon"></i>
+                    <a class="collapsible-header waves-effect arrow-r"><i class="far fa-hand-pointer"></i> Category
+                        page<i class="fas fa-angle-down rotate-icon"></i>
                     </a>
 
                     <div class="collapsible-body">
@@ -100,7 +98,7 @@
 
                 <li>
                     <a class="collapsible-header waves-effect arrow-r"><i class="far fa-bookmark"></i> Homepage<i
-                                class="fas fa-angle-down rotate-icon"></i>
+                            class="fas fa-angle-down rotate-icon"></i>
                     </a>
 
                     <div class="collapsible-body">
@@ -118,8 +116,7 @@
 
                 <li>
                     <a class="collapsible-header waves-effect arrow-r"><i class="fas fa-camera-retro"></i> Product
-                        page<i
-                                class="fas fa-angle-down rotate-icon"></i>
+                        page<i class="fas fa-angle-down rotate-icon"></i>
                     </a>
 
                     <div class="collapsible-body">
@@ -134,7 +131,7 @@
                 <li>
 
                     <a href="../contact/contact.html" class="collapsible-header waves-effect"><i
-                                class="fas fa-envelope"></i>
+                            class="fas fa-envelope"></i>
                         Contact</a>
                 </li>
 
@@ -154,14 +151,14 @@
         <div class="container">
 
             <!-- SideNav slide-out button -->
-            <div class="float-left mr-2">
+            <!-- <div class="float-left mr-2">
                 <a href="#" data-activates="slide-out" class="button-collapse"><i class="fas fa-bars"></i></a>
-            </div>
+            </div> -->
 
             <a class="navbar-brand font-weight-bold" href="/"><strong>Restaurants Collection</strong></a>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-4"
-                    aria-controls="navbarSupportedContent-4" aria-expanded="false" aria-label="Toggle navigation">
+                aria-controls="navbarSupportedContent-4" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -170,33 +167,32 @@
                 <ul class="navbar-nav ml-auto">
 
                     <li class="nav-item">
-                        <a class="nav-link waves-effect waves-light dark-grey-text font-weight-bold" href="#"><i
-                                    class="fas fa-envelope blue-text"></i> Contact
-<!--                            <span class="sr-only">(current)</span>-->
+                        <a class="nav-link waves-effect waves-light dark-grey-text font-weight-bold"
+                            href="/restaurant/create"><i class="fas fa-plus blue-text"></i> New
                         </a>
                     </li>
 
-                    <li class="nav-item ">
-                        <a class="nav-link waves-effect waves-light dark-grey-text font-weight-bold" href="#"><i
-                                    class="fas fa-cog blue-text"></i> Settings</a>
-                    </li>
                     <% if(session.userid != null){ %>
-                        <li class="nav-item dropdown ">
-                            <a class="nav-link dropdown-toggle waves-effect waves-light dark-grey-text font-weight-bold"
-                               id="navbarDropdownMenuLink-4" data-toggle="dropdown" aria-haspopup="true"
-                               aria-expanded="false"><i
-                                        class="fas fa-user blue-text"></i> Profile </a>
+                    <li class="nav-item dropdown ">
+                        <a class="nav-link dropdown-toggle waves-effect waves-light dark-grey-text font-weight-bold"
+                            id="navbarDropdownMenuLink-4" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false"><i class="fas fa-user blue-text"></i> Profile </a>
 
-                            <div class="dropdown-menu dropdown-menu-right dropdown-cyan"
-                                 aria-labelledby="navbarDropdownMenuLink-4">
-                                <a class="dropdown-item waves-effect waves-light" href="#">My account</a>
-                                <a class="dropdown-item waves-effect waves-light" href="#">Log out</a>
-                            </div>
-                        </li>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-cyan"
+                            aria-labelledby="navbarDropdownMenuLink-4">
+                            <a class="dropdown-item waves-effect waves-light" href="#">My account</a>
+                            <a class="dropdown-item waves-effect waves-light" href="#"><i
+                                    class="fas fa-sign-out-alt blue-text"> </i>Log out</a>
+                        </div>
+                    </li>
                     <% }else{ %>
 
-                        <a class="nav-link waves-effect waves-light dark-grey-text font-weight-bold" href="#" data-toggle="modal" data-target="#modalLoginForm"> Login</a>
-                        <a class="nav-link waves-effect waves-light dark-grey-text font-weight-bold" href="#" data-toggle="modal" data-target="#modalRegisterForm" > Sign up</a>
+                    <a class="nav-link waves-effect waves-light dark-grey-text font-weight-bold" href="#"
+                        data-toggle="modal" data-target="#modalLoginForm"><i class="fas fa-sign-in-alt blue-text"></i>
+                        Login</a>
+                    <a class="nav-link waves-effect waves-light white-text font-weight-bold btn btn-info btn-rounded btn-sm"
+                        href="#" data-toggle="modal" data-target="#modalRegisterForm">
+                        Sign up</a>
                     <% } %>
 
                 </ul>
