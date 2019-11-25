@@ -52,24 +52,34 @@ module.exports = router;
 //         res.json(user_array);
 //     });
 // });
-router.post('/register', function (req, res) {
+router.post('/signup', function (req, res) {
     // exports.create(req, res);
+    // console.log(req);
     var myobj = {
         userid: req.body.userid,
         password: req.body.password,
     };
-
-    exports.create(req, myobj, function (db_res) {
-        if (db_res.result.n === 1) {
-            res.send(`{status: ok,_id: ${db_res.ops[0]._id}}`);
-        } else {
+    exports.find_with_field(req, {userid:myobj.userid},function (find_result) {
+        if (find_result.length>0){
             res.status(400);
-            res.send("{status:failed}");
-            return;
+            res.send(`{"status":" Username with ${myobj.userid} is already signup"}`);
+            console.log(`{"status":" Username with ${myobj.userid} is already signup"}`)
+        }else{
+            exports.create(req, myobj, function (db_res) {
+                if (db_res.result.n === 1) {
+                    res.send(`{"status": "ok",_id: "${db_res.ops[0]._id}"}`);
+                } else {
+                    res.status(400);
+                    res.send(`{"status":"Database insert failed"}`);
+                    console.log(`{"status":"Database insert failed"}`)
+                }
+            });
         }
     });
+
+
 });
-router.post('/login', function (req, res, next) {
+router.post('/login', function (req, res) {
     var myobj = {
         userid: req.body.userid,
         password: req.body.password,

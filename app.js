@@ -4,9 +4,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('cookie-session');
+var bodyParser = require('body-parser')
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// var usersRouter = require('./routes/users');
 var restaurantRouter = require('./routes/restaurant.controller');
 var userRouter = require('./routes/user.controller');
 
@@ -25,6 +26,8 @@ app.use(function(req, res, next){
     res.locals.session = req.session;
     next();
 });
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 
 // view engine setup
@@ -40,8 +43,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// app.use('/users', usersRouter);
 app.use('/api/restaurant', restaurantRouter);
+app.use('/api/user', userRouter);
 
 
 
