@@ -4,12 +4,13 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('cookie-session');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
 
 var indexRouter = require('./routes/index');
 // var usersRouter = require('./routes/users');
-var restaurantRouter = require('./routes/restaurant.controller');
+var restaurantApiRouter = require('./routes/restaurant_api');
 var userRouter = require('./routes/user.controller');
+var restaurantRouter = require('./routes/restaurant');
 
 const getDb = require("./models/database").getDb;
 
@@ -44,7 +45,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 // app.use('/users', usersRouter);
-app.use('/api/restaurant', restaurantRouter);
+app.use('/restaurant',restaurantRouter );
+app.use('/api/restaurant', restaurantApiRouter);
 app.use('/api/user', userRouter);
 
 
