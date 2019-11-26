@@ -2,307 +2,312 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title><%= title %></title>
+    <title><%= title %></title>
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
 
-  <!-- Bootstrap core CSS -->
-  <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Material Design Bootstrap -->
-  <link href="/stylesheets/mdb.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="/stylesheets/mdb.min.css" rel="stylesheet">
 
-  <style type="text/css">
-    .multiple-select-dropdown li [type=checkbox]+label {
+    <style type="text/css">
+        .multiple-select-dropdown li [type=checkbox] + label {
 
-      height: 1rem;
+            height: 1rem;
 
-    }
-  </style>
-  <!-- Navigation -->
+        }
+    </style>
+    <!-- Navigation -->
 </head>
 
 <body class="category-v3 hidden-sn white-skin animated">
-  <% include header.ejs %>
+<% include header.ejs %>
 
-  <!-- Main Container -->
-  <div class="container">
+<!-- Main Container -->
+<div class="container">
 
     <div class="row pt-4">
 
-      <div class="col-lg-12">
+        <div class="col-lg-12">
 
-        <div class="row">
+            <div class="row">
 
-          <div class="col-md-4 mt-3">
+                <div class="col-md-4 mt-3">
 
-            <a href="/">Back to Home</a>
+                    <a href="/">Back to Home</a>
 
-            <!-- <select class="mdb-select grey-text md-form" multiple>
+                    <!-- <select class="mdb-select grey-text md-form" multiple>
 
-              <option value="" disabled selected>Choose your option</option>
+                      <option value="" disabled selected>Choose your option</option>
 
-              <option value="1">Option 1</option>
+                      <option value="1">Option 1</option>
 
-              <option value="2">Option 2</option>
+                      <option value="2">Option 2</option>
 
-              <option value="3">Option 3</option>
+                      <option value="3">Option 3</option>
 
-            </select>
+                    </select>
 
-            <label class="mdb-main-label">Example label</label>
+                    <label class="mdb-main-label">Example label</label>
 
-            <button class="btn-save btn btn-primary btn-sm">Save</button> -->
-
-          </div>
-
-          <div class="col-8 col-md-8 text-right">
-            <!-- 
-            <a class="btn blue darken-3 btn-sm">
-
-              <i class="fas fa-th mr-2" aria-hidden="true"></i>
-
-              <strong> Grid</strong>
-
-            </a>
-
-            <a class="btn blue darken-3 btn-sm">
-
-              <i class="fas fa-th-list mr-2" aria-hidden="true"></i>
-
-              <strong> List</strong>
-
-            </a> -->
-
-          </div>
-
-        </div>
-
-        <!-- Products Grid -->
-        <section class="section pt-4">
-
-          <% restaurants.forEach(function(restaurant, index) {  
-                %>
-          <!-- Grid row -->
-          <div class="row">
-
-            <!-- Grid column -->
-            <div class="col-lg-12 col-md-12 mb-4">
-
-              <!-- Card -->
-              <div class="card card-ecommerce cascade wider">
-
-                <!-- Card image -->
-                <div class="view view-cascade overlay">
-
-                  <img class="card-img-top" src="data:<%= restaurant.photo_mimetype %>;base64,<%= restaurant.photo %>"
-                    alt="">
-
-                  <a>
-
-                    <div class="mask rgba-white-slight"></div>
-
-                  </a>
+                    <button class="btn-save btn btn-primary btn-sm">Save</button> -->
 
                 </div>
-                <!-- Card image -->
 
-                <!-- Card content -->
-                <div class="card-body">
+                <div class="col-8 col-md-8 text-right">
+                    <!--
+                    <a class="btn blue darken-3 btn-sm">
 
-                  <!-- Category & Title -->
-                  <h5 class="card-title mb-1">
+                      <i class="fas fa-th mr-2" aria-hidden="true"></i>
 
-                    <strong>
+                      <strong> Grid</strong>
 
-                      <a href="" class="dark-grey-text"><%= restaurant.name %></a>
+                    </a>
 
-                    </strong>
+                    <a class="btn blue darken-3 btn-sm">
 
-                  </h5>
+                      <i class="fas fa-th-list mr-2" aria-hidden="true"></i>
 
-                  <strong><%= restaurant.borough %></strong>
+                      <strong> List</strong>
 
-                  <p><span class="badge badge-danger mb-0"><%= restaurant.cuisine %></span></p>
+                    </a> -->
 
-                  <div class="row mb-0">
+                </div>
 
-                    <div class="col-8">
-                      <!-- Rating -->
-                      <ul class="rating">
+            </div>
 
-                        <li>
+            <!-- Products Grid -->
+            <section class="section pt-4">
 
-                          <i class="fas fa-star blue-text"></i>
+                <% restaurants.forEach(function(restaurant, index) {
+                %>
+                    <!-- Grid row -->
+                    <div class="row">
 
-                        </li>
+                        <!-- Grid column -->
+                        <div class="col-lg-12 col-md-12 mb-4">
 
-                        <li>
+                            <!-- Card -->
+                            <div class="card card-ecommerce cascade wider">
 
-                          <i class="fas fa-star blue-text"></i>
+                                <!-- Card image -->
+                                <div class="view view-cascade overlay">
 
-                        </li>
+                                    <img class="card-img-top"
+                                         src="data:<%= restaurant.photo_mimetype %>;base64,<%= restaurant.photo %>"
+                                         alt="">
 
-                        <li>
+                                    <a>
 
-                          <i class="fas fa-star blue-text"></i>
+                                        <div class="mask rgba-white-slight"></div>
 
-                        </li>
+                                    </a>
 
-                        <li>
+                                </div>
+                                <!-- Card image -->
 
-                          <i class="fas fa-star blue-text"></i>
+                                <!-- Card content -->
+                                <div class="card-body">
 
-                        </li>
+                                    <!-- Category & Title -->
+                                    <h5 class="card-title mb-1">
 
-                        <li>
+                                        <strong>
 
-                          <i class="fas fa-star blue-text"></i>
+                                            <a href="" class="dark-grey-text"><%= restaurant.name %></a>
 
-                        </li>
+                                        </strong>
 
-                      </ul>
-                    </div>
+                                    </h5>
 
-                    <div class="col-4">
+                                    <strong><%= restaurant.borough %></strong>
+
+                                    <p><span class="badge badge-danger mb-0"><%= restaurant.cuisine %></span></p>
+
+                                    <div class="row mb-0">
+
+                                        <div class="col-8">
+                                            <!-- Rating -->
+                                            <ul class="rating">
+
+                                                <li>
+
+                                                    <i class="fas fa-star blue-text"></i>
+
+                                                </li>
+
+                                                <li>
+
+                                                    <i class="fas fa-star blue-text"></i>
+
+                                                </li>
+
+                                                <li>
+
+                                                    <i class="fas fa-star blue-text"></i>
+
+                                                </li>
+
+                                                <li>
+
+                                                    <i class="fas fa-star blue-text"></i>
+
+                                                </li>
+
+                                                <li>
+
+                                                    <i class="fas fa-star blue-text"></i>
+
+                                                </li>
+
+                                            </ul>
+                                        </div>
+
+                                        <div class="col-4">
 
                       <span class="float-right">
 
                         <a class="" data-toggle="tooltip" data-placement="top" title="Score">
-
                           <i class="fas fa-star ml-3"></i>
-
+                        </a>
+                        <a class="" data-toggle="tooltip" data-placement="top" title="Edit" href="/restaurant/update/restaurant_id/<%=restaurant.restaurant_id%>">
+                          <i class="fas fa-edit"></i>
                         </a>
 
                       </span>
+                                        </div>
+                                    </div>
+                                    <!-- Card footer -->
+                                    <div class="card-footer pb-0">
+
+                                        <% if (restaurant.address.coord) { %>
+                                            <!--Google map-->
+                                            <div id="map-container-google-9" class="z-depth-1-half map-container-5"
+                                                 style="height: 300px">
+                                                <iframe src="https://maps.google.com/maps?q=麥當勞&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                                                        frameborder="0" style="border:0;width: 100%;height: 100%;"
+                                                        allowfullscreen></iframe>
+                                            </div>
+
+                                        <% } %>
+
+                                        <% if (restaurant.address.street && restaurant.address.building) { %>
+                                            <p class="mt-3">
+                                                Address: <%= restaurant.address.street %> <%= restaurant.address.building %>
+                                                <%= (restaurant.address.zipcode) ? '(' + restaurant.address.zipcode + ')' : ''; %></p>
+                                        <% } %>
+                                    </div>
+                                </div> <!-- Card content -->
+                            </div>
+
+                            <!-- Card -->
+                        </div>
+                        <!-- Grid column -->
+
+
                     </div>
-                  </div>
-                  <!-- Card footer -->
-                  <div class="card-footer pb-0">
+                    <!-- Grid row -->
+                <% }) %>
 
-                    <% if (restaurant.address.coord) { %>
-                    <!--Google map-->
-                    <div id="map-container-google-9" class="z-depth-1-half map-container-5" style="height: 300px">
-                      <iframe src="https://maps.google.com/maps?q=麥當勞&t=&z=13&ie=UTF8&iwloc=&output=embed"
-                        frameborder="0" style="border:0;width: 100%;height: 100%;" allowfullscreen></iframe>
-                    </div>
+                <!-- Grid row -->
+                <!-- <div class="row justify-content-center mb-4">
 
-                    <% } %>
+                  <nav class="mb-4">
 
-                    <% if (restaurant.address.street && restaurant.address.building) { %>
-                    <p class="mt-3">Address: <%=restaurant.address.street%> <%=restaurant.address.building%>
-                      <%=(restaurant.address.zipcode)?'('+restaurant.address.zipcode+')':''; %></p>
-                    <% } %>
-                  </div>
-                </div> <!-- Card content -->
-              </div>
+                    <ul class="pagination pagination-circle pg-blue mb-0">
 
-              <!-- Card -->
-            </div>
-            <!-- Grid column -->
+                      <li class="page-item disabled clearfix d-none d-md-block">
 
+                        <a class="page-link waves-effect waves-effect">First</a>
 
-          </div>
-          <!-- Grid row -->
-          <%}) %>
+                      </li>
 
-          <!-- Grid row -->
-          <!-- <div class="row justify-content-center mb-4">
+                      <li class="page-item disabled">
 
-            <nav class="mb-4">
+                        <a class="page-link waves-effect waves-effect" aria-label="Previous">
 
-              <ul class="pagination pagination-circle pg-blue mb-0">
+                          <span aria-hidden="true">«</span>
 
-                <li class="page-item disabled clearfix d-none d-md-block">
+                          <span class="sr-only">Previous</span>
 
-                  <a class="page-link waves-effect waves-effect">First</a>
+                        </a>
 
-                </li>
+                      </li>
 
-                <li class="page-item disabled">
+                      <li class="page-item active">
 
-                  <a class="page-link waves-effect waves-effect" aria-label="Previous">
+                        <a class="page-link waves-effect waves-effect">1</a>
 
-                    <span aria-hidden="true">«</span>
+                      </li>
 
-                    <span class="sr-only">Previous</span>
+                      <li class="page-item">
 
-                  </a>
+                        <a class="page-link waves-effect waves-effect">2</a>
 
-                </li>
+                      </li>
 
-                <li class="page-item active">
+                      <li class="page-item">
 
-                  <a class="page-link waves-effect waves-effect">1</a>
+                        <a class="page-link waves-effect waves-effect">3</a>
 
-                </li>
+                      </li>
 
-                <li class="page-item">
+                      <li class="page-item">
 
-                  <a class="page-link waves-effect waves-effect">2</a>
+                        <a class="page-link waves-effect waves-effect">4</a>
 
-                </li>
+                      </li>
 
-                <li class="page-item">
+                      <li class="page-item">
 
-                  <a class="page-link waves-effect waves-effect">3</a>
+                        <a class="page-link waves-effect waves-effect">5</a>
 
-                </li>
+                      </li>
 
-                <li class="page-item">
+                      <li class="page-item">
 
-                  <a class="page-link waves-effect waves-effect">4</a>
+                        <a class="page-link waves-effect waves-effect" aria-label="Next">
 
-                </li>
+                          <span aria-hidden="true">»</span>
 
-                <li class="page-item">
+                          <span class="sr-only">Next</span>
 
-                  <a class="page-link waves-effect waves-effect">5</a>
+                        </a>
 
-                </li>
+                      </li>
 
-                <li class="page-item">
+                      <li class="page-item clearfix d-none d-md-block">
 
-                  <a class="page-link waves-effect waves-effect" aria-label="Next">
+                        <a class="page-link waves-effect waves-effect">Last</a>
 
-                    <span aria-hidden="true">»</span>
+                      </li>
 
-                    <span class="sr-only">Next</span>
+                    </ul>
 
-                  </a>
+                  </nav>
 
-                </li>
+                </div> -->
+                <!-- Grid row -->
 
-                <li class="page-item clearfix d-none d-md-block">
+            </section>
+            <!-- Products Grid -->
 
-                  <a class="page-link waves-effect waves-effect">Last</a>
-
-                </li>
-
-              </ul>
-
-            </nav>
-
-          </div> -->
-          <!-- Grid row -->
-
-        </section>
-        <!-- Products Grid -->
-
-      </div>
-      <!-- Content -->
+        </div>
+        <!-- Content -->
 
     </div>
 
-  </div>
-  <!-- Main Container -->
-  <% include footer.ejs %>
+</div>
+<!-- Main Container -->
+<% include footer.ejs %>
 </body>
 
 </html>

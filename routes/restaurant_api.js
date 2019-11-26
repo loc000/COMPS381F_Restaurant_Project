@@ -4,9 +4,10 @@ var express = require('express');
 var router = express.Router();
 var ObjectID = require('mongodb').ObjectID;
 var formidable = require('formidable');
+var _ = require('underscore');
 
-
-exports.create = function (req, restaurantObj, callback) {
+module.exports=router;
+module.exports.create = function (req, restaurantObj, callback) {
     var myobj = {
         restaurant_id: new ObjectID(),
         name: restaurantObj.name,
@@ -37,7 +38,7 @@ exports.create = function (req, restaurantObj, callback) {
 
 
 // Retrieve and return all notes from the database.
-exports.findAll = function (req, callback) {
+module.exports.findAll = function (req, callback) {
     req.db.collection("restaurant").find({}).toArray(function (err, res2) {
         if (err) throw err;
         callback(res2);
@@ -45,7 +46,7 @@ exports.findAll = function (req, callback) {
 };
 
 // Find a single note with a noteId
-exports.find_with_field = function (req, query, callback) {
+module.exports.find_with_field = function (req, query, callback) {
     req.db.collection("restaurant").find(query).toArray(function (err, res2) {
         if (err) throw err;
         callback(res2);
@@ -53,21 +54,21 @@ exports.find_with_field = function (req, query, callback) {
 };
 
 // Update a note identified by the noteId in the request
-exports.update = function (req, query, newvalues, callback) {
-    req.db.collection("restaurant").updateOne(myquery, newvalues, function (err, res) {
+module.exports.update = function (req, query, newvalues, callback) {
+    req.db.collection("restaurant").updateOne(query, newvalues, function (err, res) {
+        if (err) throw err;
         callback(res);
     });
 };
 
 // Delete a note with the specified noteId in the request
-exports.delete = function (req, query, callback) {
-    req.db.collection("restaurant").deleteOne(myquery, function (err, obj) {
+module.exports.delete = function (req, query, callback) {
+    req.db.collection("restaurant").deleteOne(query, function (err, obj) {
         if (err) throw err;
         callback(obj);
     });
 
 };
-module.exports = router;
 
 // router.post('/', function (req, res, next) {
 //     exports.create(req, res);
@@ -101,9 +102,9 @@ router.post('/', function (req, res) {
                     if (err) throw err;
                     myobj.photo = new Buffer(data).toString('base64');
                     myobj.photo_mimetype = mimetype;
-                    exports.create(req, myobj, function (db_res) {
+                    module.exports.create(req, myobj, function (db_res) {
                         if (db_res.result.n === 1) {
-                            exports.find_with_field(req, {_id: db_res.ops[0]._id}, function (find_result) {
+                            module.exports.find_with_field(req, {_id: db_res.ops[0]._id}, function (find_result) {
                                 res.json({
                                     status: "ok",
                                     _id: db_res.ops[0]._id,
@@ -117,9 +118,9 @@ router.post('/', function (req, res) {
                     });
                 })
             }else{
-                exports.create(req, myobj, function (db_res) {
+                module.exports.create(req, myobj, function (db_res) {
                     if (db_res.result.n === 1) {
-                        exports.find_with_field(req, {_id: db_res.ops[0]._id}, function (find_result) {
+                        module.exports.find_with_field(req, {_id: db_res.ops[0]._id}, function (find_result) {
                             res.json({
                                 status: "ok",
                                 _id: db_res.ops[0]._id,
@@ -157,7 +158,7 @@ router.post('/', function (req, res) {
         //         })
         //     })
         // }
-        exports.create(req, myobj, function (db_res) {
+        module.exports.create(req, myobj, function (db_res) {
             if (db_res.result.n === 1) {
                 res.send(`{status: ok,_id: ${db_res.ops[0]._id}}`);
             } else {
@@ -169,8 +170,69 @@ router.post('/', function (req, res) {
     }
 });
 
+router.put('/', function (req, res) {
+    // exports.create(req, res);
+    if (req.headers['content-type'].startsWith("multipart/form-data;")) {
+        var form = new formidable.IncomingForm();
+        form.parse(req, function (err, fields, files) {
+            var myobj = {
+                name: fields['name'],
+                borough: fields['borough'],
+                cuisine: fields['cuisine'],
+                owner: req.session.userid,
+                address:{
+                    street: fields['street'],
+                    building: fields['building'],
+                    zipcode: fields['zipcode'],
+                    coord: fields['coord'],
+                },
+            };
+
+
+            var filename = files.photo.path;
+            var mimetype = files.photo.type;
+            if ( files.photo.size>0) {
+                fs.readFile(filename, function (err, data) {
+                    console.log("Update photo");
+                    if (err) throw err;
+                    myobj.photo = new Buffer(data).toString('base64');
+                    myobj.photo_mimetype = mimetype;
+                    module.exports.update(req, {restaurant_id:ObjectID(fields['restaurant_id'])},{$set: myobj}, function (db_res) {
+                        if (db_res.result.ok === 1) {
+                                res.json({
+                                    status: "ok",
+                                    restaurant_id:fields['restaurant_id'],
+                                });
+                        } else {
+                            res.status(400);
+                            res.send(`{"status":"Restaurant name is mandatory; other attributes are optional"}`);
+                        }
+                    });
+                })
+            }else{
+                console.log("Not Update photo");
+                module.exports.update(req, {restaurant_id:ObjectID(fields['restaurant_id'])},{$set: myobj}, function (db_res) {
+
+                    if (db_res.result.ok === 1) {
+                            res.json({
+                                status: "ok",
+                                restaurant_id:fields['restaurant_id'],
+                            });
+
+                    } else {
+                        res.status(400);
+                        res.send(`{"status":"Restaurant name is mandatory; other attributes are optional"}`);
+                    }
+                });
+            }
+        });
+    }else {
+        throw new Error("Not implemented");
+    }
+});
+
 router.get('//:name', function (req, res, next) {
-    exports.find_with_field(req, {name: req.params.name}, function (restaurant_array) {
+    module.exports.find_with_field(req, {name: req.params.name}, function (restaurant_array) {
         res.end(JSON.stringify(restaurant_array));
     });
 });

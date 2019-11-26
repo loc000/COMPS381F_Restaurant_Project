@@ -7,7 +7,7 @@
 
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <title>E-Commerce - MDBootstrap</title>
+    <title><%=title %></title>
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
@@ -30,7 +30,7 @@
 
 <body class="category-v3 hidden-sn white-skin animated">
 <% include header.ejs %>
-
+<main>
 <div class="container my-5">
 
     <style>
@@ -48,25 +48,26 @@
             <div class="card-body rounded-top border-top p-5">
 
                 <!-- Section heading -->
-                <h3 class="font-weight-bold my-4">Create Restaurant</h3>
+                <h3 class="font-weight-bold my-4"><%=title %></h3>
                 <!-- Section description -->
                 <p class="font-weight-light mx-auto mb-4 pb-2">You can input restaurant information here, and we will
                     publish it.</p>
 
                 <form class="mb-4 mx-md-5" id="create_restaurant_form"
-                      action="/api/restaurant" method="post" enctype="multipart/form-data">
+                      action="<%=action %>" method="<%=method %>" enctype="multipart/form-data">
+                    <input type="hidden" name="restaurant_id" value="<%=locals.restaurant_id %>"  >
 
                     <div class="row">
                         <div class="col-md-6 mb-4">
 
                             <!-- Name -->
-                            <input type="text" name="name" required class="form-control" placeholder="Restaurant Name">
+                            <input type="text" name="name" required class="form-control" placeholder="Restaurant Name" value="<%=locals.name %>">
 
                         </div>
                         <div class="col-md-6 mb-4">
 
                             <!-- Email -->
-                            <input type="text" name="borough" class="form-control" placeholder="Borough">
+                            <input type="text" name="borough" value="<%=locals.borough %>" class="form-control" placeholder="Borough" >
 
                         </div>
                     </div>
@@ -75,10 +76,10 @@
                     <div class="row">
                         <div class="col-md-12 mb-4">
                             <!-- Subject -->
-                            <input type="text" name="street" class="form-control" placeholder="Street">
-                            <input type="text" name="building" class="form-control" placeholder="Building">
-                            <input type="text" name="zipcode" class="form-control" placeholder="zipcode">
-                            <input type="text" name="coord" class="form-control" placeholder="coord">
+                            <input type="text" name="street" value="<%=locals.street %>" class="form-control" placeholder="Street">
+                            <input type="text" name="building" value="<%=locals.building %>" class="form-control" placeholder="Building">
+                            <input type="text" name="zipcode" value="<%=locals.zipcode %>" class="form-control" placeholder="zipcode">
+                            <input type="text" name="coord" value="<%=locals.coord %>" class="form-control" placeholder="coord">
                         </div>
                     </div>
 
@@ -87,8 +88,8 @@
                         <div class="col-md-12">
 
                             <div class="form-group mb-4">
-                                <textarea class="form-control rounded" name="cuisine" rows="3"
-                                          placeholder="Cuisine"></textarea>
+                                <textarea class="form-control rounded" name="cuisine"  rows="3"
+                                          placeholder="Cuisine"><%=locals.cuisine %></textarea>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 mb-4">
@@ -121,6 +122,7 @@
     <!--Section: Content-->
 
 </div>
+</main>
 <% include footer.ejs %>
 <!-- Modal -->
 <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
@@ -179,7 +181,7 @@
             e.preventDefault(); // avoid to execute the actual submit of the form.
 
             $.ajax({
-                type: "POST",
+                type: form.attr('method'),
                 url: url,
                 'contentType': false, //required
                 'processData': false, // required
