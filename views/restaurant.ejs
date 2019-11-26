@@ -30,7 +30,7 @@
 
 <body class="category-v3 hidden-sn white-skin animated">
 <% include header.ejs %>
-
+<main>
 <!-- Main Container -->
 <div class="container">
 
@@ -181,6 +181,9 @@
                         <a class="" data-toggle="tooltip" data-placement="top" title="Edit" href="/restaurant/update/restaurant_id/<%=restaurant.restaurant_id%>">
                           <i class="fas fa-edit"></i>
                         </a>
+                        <a class="" data-toggle="tooltip" data-placement="top" title="Edit" onclick="delete_restaurant('/api/restaurant/restaurant_id/<%=restaurant.restaurant_id%>')">
+                         <i class="fas fa-trash"></i>
+                        </a>
 
                       </span>
                                         </div>
@@ -306,8 +309,57 @@
     </div>
 
 </div>
+</main>
 <!-- Main Container -->
 <% include footer.ejs %>
+<!--Modal: modalConfirmDelete-->
+<div class="modal fade" id="modalConfirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+    <!--Content-->
+    <div class="modal-content text-center">
+      <!--Header-->
+      <div class="modal-header d-flex justify-content-center">
+        <p class="heading">Are you sure to delete this restaurant?</p>
+        <input type="hidden" id="delete_restaurant_url">
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+
+        <i class="fas fa-times fa-4x animated rotateIn"></i>
+
+      </div>
+
+      <!--Footer-->
+      <div class="modal-footer flex-center">
+        <a onclick="confirm_delete_restaurant()" class="btn  btn-outline-danger">Yes</a>
+        <a type="button" class="btn  btn-danger waves-effect" data-dismiss="modal">No</a>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+<!--Modal: modalConfirmDelete-->
+<script>
+  function delete_restaurant(url){
+    $("#delete_restaurant_url").val(url);
+    $('#modalConfirmDelete').modal("show");
+  }
+  function confirm_delete_restaurant() {
+    var url = $("#delete_restaurant_url").val();
+    $.ajax({
+      type: "DELETE",
+      url: url,
+      success: function(data)
+      {
+        // location.reload();
+        window.location.href =  "/?success="+encodeURI("Delete Restaurant Successful") ;
+      },
+    })
+
+  }
+</script>
 </body>
 
 </html>

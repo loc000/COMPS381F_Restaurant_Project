@@ -62,7 +62,8 @@ module.exports.update = function (req, query, newvalues, callback) {
 };
 
 // Delete a note with the specified noteId in the request
-module.exports.delete = function (req, query, callback) {
+module.exports.deleteOne = function (req, query, callback) {
+    console.log(req);
     req.db.collection("restaurant").deleteOne(query, function (err, obj) {
         if (err) throw err;
         callback(obj);
@@ -73,11 +74,20 @@ module.exports.delete = function (req, query, callback) {
 // router.post('/', function (req, res, next) {
 //     exports.create(req, res);
 // });
+
+
 router.get('/', function (req, res) {
-    exports.findAll(req, function (restaurant_array) {
+    module.exports.findAll(req, function (restaurant_array) {
         res.json(restaurant_array);
     });
 });
+router.delete('/restaurant_id/:restaurant_id', function (req, res) {
+    console.log(req.params);
+    module.exports.deleteOne(req, {restaurant_id:ObjectID(req.params.restaurant_id)},function (restaurant_array) {
+        res.json(restaurant_array);
+    });
+});
+
 router.post('/', function (req, res) {
     // exports.create(req, res);
     if (req.headers['content-type'].startsWith("multipart/form-data;")) {
