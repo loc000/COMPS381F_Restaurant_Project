@@ -7,7 +7,6 @@ const session = require('cookie-session');
 const bodyParser = require('body-parser');
 
 const indexRouter = require('./routes/index');
-// var usersRouter = require('./routes/users');
 const restaurantApiRouter = require('./routes/restaurant_api');
 const userRouter = require('./routes/user.controller');
 const restaurantRouter = require('./routes/restaurant');

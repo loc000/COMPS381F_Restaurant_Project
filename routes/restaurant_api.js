@@ -1,6 +1,9 @@
+const fs = require('fs');
+
 var express = require('express');
 var router = express.Router();
 var ObjectID = require('mongodb').ObjectID;
+var formidable = require('formidable');
 
 
 exports.create = function (req, restaurantObj, callback) {
@@ -75,38 +78,71 @@ router.get('/', function (req, res) {
 });
 router.post('/', function (req, res) {
     // exports.create(req, res);
-    var myobj = {
-        name: req.body.name,
-        borough: req.body.borough,
-        cuisine: req.body.cuisine,
-        photo: req.body.photo,
-        photo_mimetype: req.body.photo_mimetype,
-        grades: [],
-        owner: req.body.owner,
-    };
-    if (req.body.address) {
-        myobj.street = req.body.address.street;
-        myobj.building = req.body.address.building;
-        myobj.zipcode = req.body.address.zipcode;
-        myobj.coord = req.body.address.coord
-    }
-    // if (req.body.grades) {
-    //     req.body.grades.forEach(element => {
-    //         myobj.grades.push({
-    //             "user": element.user,
-    //             "score": element.score,
-    //         })
-    //     })
-    // }
-    exports.create(req, myobj, function (db_res) {
-        if (db_res.result.n === 1) {
-            res.send(`{status: ok,_id: ${db_res.ops[0]._id}}`);
-        } else {
-            res.status(400);
-            res.send("{status:failed}");
-            return;
+    if (req.headers['content-type'].startsWith("multipart/form-data;")) {
+        var form = new formidable.IncomingForm();
+        form.parse(req, function (err, fields, files) {
+            var myobj = {
+                name: fields['name'],
+                borough: fields['borough'],
+                cuisine: fields['cuisine'],
+                grades: [],
+                owner: req.session.userid,
+                street: fields['street'],
+                building: fields['building'],
+                zipcode: fields['zipcode'],
+                coord: fields['coord'],
+            };
+
+            var filename = files.photo.path;
+            var mimetype = files.photo.type;
+            fs.readFile(filename, function (err, data) {
+                if (err) throw err;
+                myobj.photo = new Buffer(data).toString('base64');
+                myobj.photo_mimetype = mimetype;
+                exports.create(req, myobj, function (db_res) {
+                    if (db_res.result.n === 1) {
+                        res.send(`{status: ok,_id: ${db_res.ops[0]._id}}`);
+                    } else {
+                        res.status(400);
+                        res.send("{status:failed}");
+                    }
+                });
+            })
+        });
+    } else {
+        var myobj = {
+            name: req.body.name,
+            borough: req.body.borough,
+            cuisine: req.body.cuisine,
+            photo: req.body.photo,
+            photo_mimetype: req.body.photo_mimetype,
+            grades: [],
+            owner: req.body.owner,
+        };
+        if (req.body.address) {
+            myobj.street = req.body.address.street;
+            myobj.building = req.body.address.building;
+            myobj.zipcode = req.body.address.zipcode;
+            myobj.coord = req.body.address.coord
         }
-    });
+        // if (req.body.grades) {
+        //     req.body.grades.forEach(element => {
+        //         myobj.grades.push({
+        //             "user": element.user,
+        //             "score": element.score,
+        //         })
+        //     })
+        // }
+        exports.create(req, myobj, function (db_res) {
+            if (db_res.result.n === 1) {
+                res.send(`{status: ok,_id: ${db_res.ops[0]._id}}`);
+            } else {
+                res.status(400);
+                res.send("{status:failed}");
+                return;
+            }
+        });
+    }
 });
 
 router.get('//:name', function (req, res, next) {
