@@ -10,12 +10,27 @@ exports.findAll = function (req, callback) {
   });
 };
 
+// Find a single note with a noteId
+exports.find_with_field = function (req, query, callback) {
+  req.db.collection("restaurant").find(query).toArray(function (err, res2) {
+      if (err) throw err;
+      callback(res2);
+  });
+};
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   exports.findAll(req, function (restaurant_array) {
     //res.json(restaurant_array);
     res.render('index', { title: 'Restaurants Collection',restaurants: restaurant_array });
   });
+});
+
+router.get('/restaurant/:name', function (req, res, next) {
+    exports.find_with_field(req, {name: req.params.name}, function (restaurant_array) {
+        //res.end(JSON.stringify(restaurant_array));
+        res.render('restaurant', { title: 'Restaurants Collection',restaurants: restaurant_array });
+    });
 });
 
 module.exports = router;
