@@ -187,7 +187,7 @@
                 data: new FormData($(this)[0]), // serializes the form's elements.
                 success: function(data)
                 {
-                    window.location.href = '/restaurant/'+JSON.parse(data)._id;
+                    window.location.href = '/restaurant/restaurant_id/'+JSON.parse(data).restaurant_id;
                 },
             }).fail(function( xhr, textStatus ) {
                 alert( JSON.parse( xhr.responseText +"").status );

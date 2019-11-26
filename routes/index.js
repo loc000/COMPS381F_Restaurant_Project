@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var restaurant = require('./restaurant_api');
+var ObjectId = require('mongodb').ObjectID;
 
 // Retrieve and return all notes from the database.
 exports.findAll = function (req, callback) {
@@ -28,6 +29,12 @@ router.get('/', function(req, res, next) {
 
 router.get('/restaurant/name/:name', function (req, res, next) {
     exports.find_with_field(req, {name: req.params.name}, function (restaurant_array) {
+        //res.end(JSON.stringify(restaurant_array));
+        res.render('restaurant', { title: 'Restaurants Collection',restaurants: restaurant_array });
+    });
+});
+router.get('/restaurant/restaurant_id/:id', function (req, res, next) {
+    exports.find_with_field(req, {restaurant_id:  new ObjectId(req.params.id)}, function (restaurant_array) {
         //res.end(JSON.stringify(restaurant_array));
         res.render('restaurant', { title: 'Restaurants Collection',restaurants: restaurant_array });
     });
