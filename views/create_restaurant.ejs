@@ -106,7 +106,7 @@
                             </div>
 
                             <div class="text-center">
-                                <button type="button" id="create_restaurant_submit_button" onclick="create_restaurant" class="btn btn-info btn-md">Submit</button>
+                                <button type="button" id="create_restaurant_submit_button" onclick="create_restaurant()" class="btn btn-info btn-md">Submit</button>
                             </div>
 
                         </div>
@@ -176,11 +176,15 @@
 
             var form = $(this);
             var url = form.attr('action');
+            e.preventDefault(); // avoid to execute the actual submit of the form.
 
             $.ajax({
                 type: "POST",
                 url: url,
-                data: form.serialize(), // serializes the form's elements.
+                'contentType': false, //required
+                'processData': false, // required
+                'mimeType': 'multipart/form-data',
+                data: new FormData($(this)[0]), // serializes the form's elements.
                 success: function(data)
                 {
                     window.location.href = '/restaurant/'+JSON.parse(data)._id;
@@ -193,7 +197,7 @@
                 $("#create_restaurant_submit_button").html("Submit")
             });
 
-            e.preventDefault(); // avoid to execute the actual submit of the form.
+
         });
         $("#create_restaurant_form").submit();
     }

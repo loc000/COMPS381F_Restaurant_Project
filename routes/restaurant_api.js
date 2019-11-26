@@ -24,6 +24,7 @@ exports.create = function (req, restaurantObj, callback) {
         owner: restaurantObj.owner,
     };
     if (myobj.owner === undefined || myobj.name === undefined) {
+        console.log(myobj);
         console.log("Error: name and owner are mandatory; other attributes are optional");
         callback({result: {n: 0}});
     } else {
@@ -101,10 +102,10 @@ router.post('/', function (req, res) {
                 myobj.photo_mimetype = mimetype;
                 exports.create(req, myobj, function (db_res) {
                     if (db_res.result.n === 1) {
-                        res.send(`{status: ok,_id: ${db_res.ops[0]._id}}`);
+                        res.send(`{"status": "ok","_id": "${db_res.ops[0]._id}"}`);
                     } else {
                         res.status(400);
-                        res.send("{status:failed}");
+                        res.send(`{"status":"failed"}`);
                     }
                 });
             })
