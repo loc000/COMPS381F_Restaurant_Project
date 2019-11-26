@@ -68,7 +68,8 @@
                 // data: form.serialize(), // serializes the form's elements.
                 success: function(data)
                 {
-                    location.reload();
+                    // location.reload();
+                    window.location.href = window.location.href.replace( /[\?#].*|$/, "?success=Logout%20Success" );
                 },
             })
         }

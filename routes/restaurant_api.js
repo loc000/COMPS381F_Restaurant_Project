@@ -96,10 +96,27 @@ router.post('/', function (req, res) {
 
             var filename = files.photo.path;
             var mimetype = files.photo.type;
-            fs.readFile(filename, function (err, data) {
-                if (err) throw err;
-                myobj.photo = new Buffer(data).toString('base64');
-                myobj.photo_mimetype = mimetype;
+            if ( files.photo.size>0) {
+                fs.readFile(filename, function (err, data) {
+                    if (err) throw err;
+                    myobj.photo = new Buffer(data).toString('base64');
+                    myobj.photo_mimetype = mimetype;
+                    exports.create(req, myobj, function (db_res) {
+                        if (db_res.result.n === 1) {
+                            exports.find_with_field(req, {_id: db_res.ops[0]._id}, function (find_result) {
+                                res.json({
+                                    status: "ok",
+                                    _id: db_res.ops[0]._id,
+                                    restaurant_id: find_result[0].restaurant_id,
+                                });
+                            });
+                        } else {
+                            res.status(400);
+                            res.send(`{"status":"failed"}`);
+                        }
+                    });
+                })
+            }else{
                 exports.create(req, myobj, function (db_res) {
                     if (db_res.result.n === 1) {
                         exports.find_with_field(req, {_id: db_res.ops[0]._id}, function (find_result) {
@@ -114,7 +131,7 @@ router.post('/', function (req, res) {
                         res.send(`{"status":"failed"}`);
                     }
                 });
-            })
+            }
         });
     } else {
         var myobj = {

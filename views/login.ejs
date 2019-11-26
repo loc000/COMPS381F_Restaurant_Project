@@ -48,10 +48,15 @@
                 data: form.serialize(), // serializes the form's elements.
                 success: function(data)
                 {
-                    location.reload();
+                    // location.reload();
+                    window.location.href = window.location.href.replace( /[\?#].*|$/, "?success=Login%20Success" );
                 },
             }).fail(function( xhr, textStatus ) {
-                alert("Login Failed, Please Try Again");
+                $('#modalLoginFail').modal('show');
+                $("#defaultForm-pass").val("")
+
+                $("#login_button").prop("disabled", false);
+                $("#login_button").html("Sign up")
             }).done(function () {
                 document.getElementById('login_form').reset();
 
@@ -64,3 +69,33 @@
         $("#login_form").submit();
     }
 </script>
+
+
+<!--Modal: modalConfirmDelete-->
+<div class="modal fade" id="modalLoginFail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+        <!--Content-->
+        <div class="modal-content text-center">
+            <!--Header-->
+            <div class="modal-header d-flex justify-content-center">
+                <p class="heading">Login Fail</p>
+            </div>
+
+            <!--Body-->
+            <div class="modal-body" id="signup_message">
+
+                Login Failed, Please Try Again
+
+            </div>
+
+            <!--Footer-->
+            <div class="modal-footer flex-center">
+                <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4"
+                        data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+<!--Modal: modalConfirmDelete-->

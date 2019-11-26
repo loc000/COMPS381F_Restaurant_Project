@@ -40,38 +40,63 @@
 
             var form = $(this);
             var url = form.attr('action');
-
             $.ajax({
                 type: "POST",
                 url: url,
                 data: form.serialize(), // serializes the form's elements.
                 success: function(data)
                 {
-                    alert("Sign up success. You can login now."); // show response from the script.
+                    toastr.success("Sign up success. You can login now."); // show response from the script.
                     $('#modalRegisterForm').modal('hide')
                     $('#modalLoginForm').modal('show')
                 },
             }).fail(function( xhr, textStatus ) {
-                alert( JSON.parse( xhr.responseText +"").status );
-                location.reload();
+                // alert( JSON.parse( xhr.responseText +"").status );
+                // location.reload();
+                // window.location.href = window.location.href.replace( /[\?#].*|$/, "?error="+encodeURI("Sign up failed, "+JSON.parse( xhr.responseText +"").status ));
+                $("#signup_message").text(JSON.parse( xhr.responseText +"").status)
+                $('#modalSignUpFail').modal('show');
+                document.getElementById('signup_form').reset();
+                $("#signup_button").prop("disabled", false);
+                $("#signup_button").html("Sign up");
             }).done(function () {
                 document.getElementById('signup_form').reset();
-
                 $("#signup_button").prop("disabled", false);
-                $("#signup_button").html("Sign up")
+                $("#signup_button").html("Sign up");
             });
 
             e.preventDefault(); // avoid to execute the actual submit of the form.
         });
         $("#signup_form").submit();
     }
-
-
-
-
 </script>
 
-<div class="text-center">
-    <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalRegisterForm">Launch
-        Modal Register Form</a>
+
+<!--Modal: modalConfirmDelete-->
+<div class="modal fade" id="modalSignUpFail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+        <!--Content-->
+        <div class="modal-content text-center">
+            <!--Header-->
+            <div class="modal-header d-flex justify-content-center">
+                <p class="heading">Sign Up Fail</p>
+            </div>
+
+            <!--Body-->
+            <div class="modal-body" id="signup_message">
+
+
+
+            </div>
+
+            <!--Footer-->
+            <div class="modal-footer flex-center">
+                <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4"
+                        data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
 </div>
+<!--Modal: modalConfirmDelete-->
