@@ -53,7 +53,7 @@
                 <p class="font-weight-light mx-auto mb-4 pb-2">You can input restaurant information here, and we will
                     publish it.</p>
 
-                <form class="mb-4 mx-md-5"
+                <form class="mb-4 mx-md-5" id="create_restaurant_form"
                       action="/api/restaurant" method="post" enctype="multipart/form-data">
 
                     <div class="row">
@@ -106,7 +106,7 @@
                             </div>
 
                             <div class="text-center">
-                                <button type="submit" class="btn btn-info btn-md">Submit</button>
+                                <button type="button" id="create_restaurant_submit_button" onclick="create_restaurant" class="btn btn-info btn-md">Submit</button>
                             </div>
 
                         </div>
@@ -122,8 +122,81 @@
 
 </div>
 <% include footer.ejs %>
-<script>
+<!-- Modal -->
+<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
 
+    <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Loading</h5>
+            </div>
+            <div class="modal-body">
+                <div class="spinner-grow text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-secondary" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-success" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-danger" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-warning" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-info" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-light" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-dark" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function create_restaurant() {
+
+        $('#loadingModal').modal({backdrop: 'static', keyboard: false})
+        $("#create_restaurant_submit_button").prop("disabled", true);
+        $("#create_restaurant_submit_button").html("<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>\n" +
+            "  Loading...")
+        $("#create_restaurant_form").submit(function(e) {
+
+            var form = $(this);
+            var url = form.attr('action');
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: form.serialize(), // serializes the form's elements.
+                success: function(data)
+                {
+                    window.location.href = '/restaurant/'+JSON.parse(data)._id;
+                },
+            }).fail(function( xhr, textStatus ) {
+                alert( JSON.parse( xhr.responseText +"").status );
+            }).done(function () {
+                $('#loadingModal').hide();
+                $("#create_restaurant_submit_button").prop("disabled", false);
+                $("#create_restaurant_submit_button").html("Submit")
+            });
+
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+        });
+        $("#create_restaurant_form").submit();
+    }
 </script>
 </body>
 

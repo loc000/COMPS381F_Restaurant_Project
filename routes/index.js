@@ -26,7 +26,7 @@ router.get('/', function(req, res, next) {
   });
 });
 
-router.get('/restaurant/:name', function (req, res, next) {
+router.get('/restaurant/name/:name', function (req, res, next) {
     exports.find_with_field(req, {name: req.params.name}, function (restaurant_array) {
         //res.end(JSON.stringify(restaurant_array));
         res.render('restaurant', { title: 'Restaurants Collection',restaurants: restaurant_array });
