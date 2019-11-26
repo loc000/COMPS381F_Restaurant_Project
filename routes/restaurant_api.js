@@ -23,7 +23,7 @@ exports.create = function (req, restaurantObj, callback) {
         grades: [],
         owner: restaurantObj.owner,
     };
-    if (myobj.owner === undefined || myobj.name === undefined) {
+    if (myobj.owner === undefined || myobj.name === undefined||myobj.owner.length<= 0||myobj.name.length<= 0) {
         console.log(myobj);
         console.log("Error: name and owner are mandatory; other attributes are optional");
         callback({result: {n: 0}});
@@ -112,7 +112,7 @@ router.post('/', function (req, res) {
                             });
                         } else {
                             res.status(400);
-                            res.send(`{"status":"failed"}`);
+                            res.send(`{"status":"Restaurant name is mandatory; other attributes are optional"}`);
                         }
                     });
                 })
@@ -128,7 +128,7 @@ router.post('/', function (req, res) {
                         });
                     } else {
                         res.status(400);
-                        res.send(`{"status":"failed"}`);
+                        res.send(`{"status":"Restaurant name is mandatory; other attributes are optional"}`);
                     }
                 });
             }

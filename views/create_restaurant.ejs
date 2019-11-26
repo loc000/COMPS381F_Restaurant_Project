@@ -60,7 +60,7 @@
                         <div class="col-md-6 mb-4">
 
                             <!-- Name -->
-                            <input type="text" name="name" class="form-control" placeholder="Restaurant Name">
+                            <input type="text" name="name" required class="form-control" placeholder="Restaurant Name">
 
                         </div>
                         <div class="col-md-6 mb-4">
@@ -167,12 +167,12 @@
 </div>
 <script>
     function create_restaurant() {
-
-        $('#loadingModal').modal({backdrop: 'static', keyboard: false})
+        $('#loadingModal').modal('hide');
         $("#create_restaurant_submit_button").prop("disabled", true);
         $("#create_restaurant_submit_button").html("<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>\n" +
             "  Loading...")
         $("#create_restaurant_form").submit(function(e) {
+            // $('#loadingModal').modal({backdrop: 'static', keyboard: false})
 
             var form = $(this);
             var url = form.attr('action');
@@ -190,9 +190,14 @@
                     window.location.href = '/restaurant/restaurant_id/'+JSON.parse(data).restaurant_id+"?success="+encodeURI("Restaurant create Successful");
                 },
             }).fail(function( xhr, textStatus ) {
-                alert( JSON.parse( xhr.responseText +"").status );
+                $('#loadingModal').modal('hide');
+
+                $("#create_restaurant_submit_button").prop("disabled", false).html("Submit");
+                // $("#create_restaurant_submit_button").html("Submit")
+                $("#createRestaurant_message").text(JSON.parse( xhr.responseText +"").status )
+                $("#modalcreateRestaurantFail").modal("show");
             }).done(function () {
-                $('#loadingModal').hide();
+                // $('#loadingModal').hide();
                 $("#create_restaurant_submit_button").prop("disabled", false);
                 $("#create_restaurant_submit_button").html("Submit")
             });
@@ -202,6 +207,35 @@
         $("#create_restaurant_form").submit();
     }
 </script>
+
+<!--Modal: modalConfirmDelete-->
+<div class="modal" id="modalcreateRestaurantFail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+        <!--Content-->
+        <div class="modal-content text-center">
+            <!--Header-->
+            <div class="modal-header d-flex justify-content-center">
+                <p class="heading">Create Fail</p>
+            </div>
+
+            <!--Body-->
+            <div class="modal-body" id="createRestaurant_message">
+
+
+
+            </div>
+
+            <!--Footer-->
+            <div class="modal-footer flex-center">
+                <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4"
+                        data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+<!--Modal: modalConfirmDelete-->
 </body>
 
 </html>
