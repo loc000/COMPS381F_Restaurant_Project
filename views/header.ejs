@@ -23,13 +23,14 @@
 
                 <ul class="navbar-nav ml-auto">
 
-                    <li class="nav-item">
-                        <a class="nav-link waves-effect waves-light dark-grey-text font-weight-bold"
-                            href="/restaurant/create"><i class="fas fa-plus blue-text"></i> New
-                        </a>
-                    </li>
+
 
                     <% if(session.userid != null){ %>
+                        <li class="nav-item">
+                        <a class="nav-link waves-effect waves-light dark-grey-text font-weight-bold"
+                           href="/restaurant/create"><i class="fas fa-plus blue-text"></i> New
+                        </a>
+                    </li>
                     <li class="nav-item dropdown ">
                         <a class="nav-link dropdown-toggle waves-effect waves-light dark-grey-text font-weight-bold"
                             id="navbarDropdownMenuLink-4" data-toggle="dropdown" aria-haspopup="true"

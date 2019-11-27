@@ -44,6 +44,21 @@ module.exports.findAll = function (req, callback) {
         callback(res2);
     });
 };
+// Retrieve and return all notes from the database.
+module.exports.search = function (req, keyword, callback) {
+    // req.db.collection("restaurant").getIndexes().toArray(function (err,res2) {
+    //     req.db.collection("restaurant").dropIndex("post_text_text")
+    // });
+    req.db.collection("restaurant").createIndex({
+        "$**": "text",
+    }, {name: "index"});
+    req.db.collection("restaurant").find({
+            $text: {$search:keyword},
+    }).toArray(function (err, res2) {
+        if (err) throw err;
+        callback(res2);
+    });
+};
 
 // Find a single note with a noteId
 module.exports.find_with_field = function (req, query, callback) {
@@ -243,6 +258,12 @@ router.put('/', function (req, res) {
 
 router.get('//:name', function (req, res, next) {
     module.exports.find_with_field(req, {name: req.params.name}, function (restaurant_array) {
+        res.end(JSON.stringify(restaurant_array));
+    });
+});
+router.get('/search/:name', function (req, res, next) {
+    console.log(req.params.name);
+    module.exports.search(req, req.params.name, function (restaurant_array) {
         res.end(JSON.stringify(restaurant_array));
     });
 });
