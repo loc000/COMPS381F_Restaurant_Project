@@ -107,36 +107,54 @@
 
                   <!-- Rating -->
                   <ul class="rating">
+                    <%
+                      let rated = false;
+                      let score = 0;
+                      restaurant.grades.forEach(function (value, index, array) {
+                        if (value.user==session.userid){
+                          if (value.score!=null){
+                            rated=true;
+                            if (score==0){
+                              score = value.score;
+                            }else{
+                              score = (parseFloat(score)+parseFloat(value.score))/2;
+                            }
+                          }
+                        }
+                      });
+ %>
+                    <span for=""
+                           class="">Rate: </span>
+                    <span><%=score %></span>
+<!--                    <li>-->
 
-                    <li>
+<!--                      <i class="fas fa-star blue-text"></i>-->
 
-                      <i class="fas fa-star blue-text"></i>
+<!--                    </li>-->
 
-                    </li>
+<!--                    <li>-->
 
-                    <li>
+<!--                      <i class="fas fa-star blue-text"></i>-->
 
-                      <i class="fas fa-star blue-text"></i>
+<!--                    </li>-->
 
-                    </li>
+<!--                    <li>-->
 
-                    <li>
+<!--                      <i class="fas fa-star blue-text"></i>-->
 
-                      <i class="fas fa-star blue-text"></i>
+<!--                    </li>-->
 
-                    </li>
+<!--                    <li>-->
 
-                    <li>
+<!--                      <i class="fas fa-star blue-text"></i>-->
 
-                      <i class="fas fa-star blue-text"></i>
+<!--                    </li>-->
 
-                    </li>
+<!--                    <li>-->
 
-                    <li>
+<!--                      <i class="fas fa-star blue-text"></i>-->
 
-                      <i class="fas fa-star blue-text"></i>
-
-                    </li>
+<!--                    </li>-->
 
                   </ul>
 

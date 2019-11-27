@@ -36,6 +36,13 @@ router.get('/restaurant/name/:name', function (req, res, next) {
 router.get('/restaurant/restaurant_id/:id', function (req, res, next) {
     exports.find_with_field(req, {restaurant_id:  new ObjectId(req.params.id)}, function (restaurant_array) {
         //res.end(JSON.stringify(restaurant_array));
+        // console.log(restaurant_array);
+        let rated = false;
+        restaurant_array[0].grades.forEach(function (value, index, array) {
+           if (value.user=req.session.userid){
+               rated=true;
+           }
+        });
         res.render('restaurant', { title: 'Restaurants Collection',restaurants: restaurant_array });
     });
 });

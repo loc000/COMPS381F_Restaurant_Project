@@ -6,7 +6,7 @@ var ObjectID = require('mongodb').ObjectID;
 var formidable = require('formidable');
 var _ = require('underscore');
 
-module.exports=router;
+module.exports = router;
 module.exports.create = function (req, restaurantObj, callback) {
     var myobj = {
         restaurant_id: new ObjectID(),
@@ -24,7 +24,7 @@ module.exports.create = function (req, restaurantObj, callback) {
         grades: [],
         owner: restaurantObj.owner,
     };
-    if (myobj.owner === undefined || myobj.name === undefined||myobj.owner.length<= 0||myobj.name.length<= 0) {
+    if (myobj.owner === undefined || myobj.name === undefined || myobj.owner.length <= 0 || myobj.name.length <= 0) {
         console.log(myobj);
         console.log("Error: name and owner are mandatory; other attributes are optional");
         callback({result: {n: 0}});
@@ -83,7 +83,7 @@ router.get('/', function (req, res) {
 });
 router.delete('/restaurant_id/:restaurant_id', function (req, res) {
     console.log(req.params);
-    module.exports.deleteOne(req, {restaurant_id:ObjectID(req.params.restaurant_id)},function (restaurant_array) {
+    module.exports.deleteOne(req, {restaurant_id: ObjectID(req.params.restaurant_id)}, function (restaurant_array) {
         res.json(restaurant_array);
     });
 });
@@ -107,7 +107,7 @@ router.post('/', function (req, res) {
 
             var filename = files.photo.path;
             var mimetype = files.photo.type;
-            if ( files.photo.size>0) {
+            if (files.photo.size > 0) {
                 fs.readFile(filename, function (err, data) {
                     if (err) throw err;
                     myobj.photo = new Buffer(data).toString('base64');
@@ -127,7 +127,7 @@ router.post('/', function (req, res) {
                         }
                     });
                 })
-            }else{
+            } else {
                 module.exports.create(req, myobj, function (db_res) {
                     if (db_res.result.n === 1) {
                         module.exports.find_with_field(req, {_id: db_res.ops[0]._id}, function (find_result) {
@@ -190,7 +190,7 @@ router.put('/', function (req, res) {
                 borough: fields['borough'],
                 cuisine: fields['cuisine'],
                 owner: req.session.userid,
-                address:{
+                address: {
                     street: fields['street'],
                     building: fields['building'],
                     zipcode: fields['zipcode'],
@@ -201,33 +201,33 @@ router.put('/', function (req, res) {
 
             var filename = files.photo.path;
             var mimetype = files.photo.type;
-            if ( files.photo.size>0) {
+            if (files.photo.size > 0) {
                 fs.readFile(filename, function (err, data) {
                     console.log("Update photo");
                     if (err) throw err;
                     myobj.photo = new Buffer(data).toString('base64');
                     myobj.photo_mimetype = mimetype;
-                    module.exports.update(req, {restaurant_id:ObjectID(fields['restaurant_id'])},{$set: myobj}, function (db_res) {
+                    module.exports.update(req, {restaurant_id: ObjectID(fields['restaurant_id'])}, {$set: myobj}, function (db_res) {
                         if (db_res.result.ok === 1) {
-                                res.json({
-                                    status: "ok",
-                                    restaurant_id:fields['restaurant_id'],
-                                });
+                            res.json({
+                                status: "ok",
+                                restaurant_id: fields['restaurant_id'],
+                            });
                         } else {
                             res.status(400);
                             res.send(`{"status":"Restaurant name is mandatory; other attributes are optional"}`);
                         }
                     });
                 })
-            }else{
+            } else {
                 console.log("Not Update photo");
-                module.exports.update(req, {restaurant_id:ObjectID(fields['restaurant_id'])},{$set: myobj}, function (db_res) {
+                module.exports.update(req, {restaurant_id: ObjectID(fields['restaurant_id'])}, {$set: myobj}, function (db_res) {
 
                     if (db_res.result.ok === 1) {
-                            res.json({
-                                status: "ok",
-                                restaurant_id:fields['restaurant_id'],
-                            });
+                        res.json({
+                            status: "ok",
+                            restaurant_id: fields['restaurant_id'],
+                        });
 
                     } else {
                         res.status(400);
@@ -236,13 +236,27 @@ router.put('/', function (req, res) {
                 });
             }
         });
-    }else {
+    } else {
         throw new Error("Not implemented");
     }
 });
 
 router.get('//:name', function (req, res, next) {
     module.exports.find_with_field(req, {name: req.params.name}, function (restaurant_array) {
+        res.end(JSON.stringify(restaurant_array));
+    });
+});
+
+router.post('/rate/restaurant_id/:restaurant_id', function (req, res) {
+
+    module.exports.update(req, {restaurant_id: ObjectID(req.params.restaurant_id)}, {
+        $push: {
+            grades: {
+                user: req.session.userid,
+                score: req.body.score
+            }
+        }
+    }, function (restaurant_array) {
         res.end(JSON.stringify(restaurant_array));
     });
 });

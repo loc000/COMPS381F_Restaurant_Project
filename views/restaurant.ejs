@@ -31,334 +31,396 @@
 <body class="category-v3 hidden-sn white-skin animated">
 <% include header.ejs %>
 <main>
-<!-- Main Container -->
-<div class="container">
+    <!-- Main Container -->
+    <div class="container">
 
-    <div class="row pt-4">
+        <div class="row pt-4">
 
-        <div class="col-lg-12">
+            <div class="col-lg-12">
 
-            <div class="row">
+                <div class="row">
 
-                <div class="col-md-4 mt-3">
+                    <div class="col-md-4 mt-3">
 
-                    <a href="/">Back to Home</a>
+                        <a href="/">Back to Home</a>
 
-                    <!-- <select class="mdb-select grey-text md-form" multiple>
+                        <!-- <select class="mdb-select grey-text md-form" multiple>
 
-                      <option value="" disabled selected>Choose your option</option>
+                          <option value="" disabled selected>Choose your option</option>
 
-                      <option value="1">Option 1</option>
+                          <option value="1">Option 1</option>
 
-                      <option value="2">Option 2</option>
+                          <option value="2">Option 2</option>
 
-                      <option value="3">Option 3</option>
+                          <option value="3">Option 3</option>
 
-                    </select>
+                        </select>
 
-                    <label class="mdb-main-label">Example label</label>
+                        <label class="mdb-main-label">Example label</label>
 
-                    <button class="btn-save btn btn-primary btn-sm">Save</button> -->
+                        <button class="btn-save btn btn-primary btn-sm">Save</button> -->
+
+                    </div>
+
+                    <div class="col-8 col-md-8 text-right">
+                        <!--
+                        <a class="btn blue darken-3 btn-sm">
+
+                          <i class="fas fa-th mr-2" aria-hidden="true"></i>
+
+                          <strong> Grid</strong>
+
+                        </a>
+
+                        <a class="btn blue darken-3 btn-sm">
+
+                          <i class="fas fa-th-list mr-2" aria-hidden="true"></i>
+
+                          <strong> List</strong>
+
+                        </a> -->
+
+                    </div>
 
                 </div>
 
-                <div class="col-8 col-md-8 text-right">
-                    <!--
-                    <a class="btn blue darken-3 btn-sm">
+                <!-- Products Grid -->
+                <section class="section pt-4">
 
-                      <i class="fas fa-th mr-2" aria-hidden="true"></i>
+                    <% restaurants.forEach(function(restaurant, index) {
+                    %>
+                        <!-- Grid row -->
+                        <div class="row">
 
-                      <strong> Grid</strong>
+                            <!-- Grid column -->
+                            <div class="col-lg-12 col-md-12 mb-4">
 
-                    </a>
+                                <!-- Card -->
+                                <div class="card card-ecommerce cascade wider">
 
-                    <a class="btn blue darken-3 btn-sm">
+                                    <!-- Card image -->
+                                    <div class="view view-cascade overlay">
 
-                      <i class="fas fa-th-list mr-2" aria-hidden="true"></i>
+                                        <img class="card-img-top"
+                                             src="data:<%= restaurant.photo_mimetype %>;base64,<%= restaurant.photo %>"
+                                             alt="">
 
-                      <strong> List</strong>
+                                        <a>
 
-                    </a> -->
+                                            <div class="mask rgba-white-slight"></div>
 
-                </div>
+                                        </a>
 
-            </div>
+                                    </div>
+                                    <!-- Card image -->
 
-            <!-- Products Grid -->
-            <section class="section pt-4">
+                                    <!-- Card content -->
+                                    <div class="card-body">
 
-                <% restaurants.forEach(function(restaurant, index) {
-                %>
-                    <!-- Grid row -->
-                    <div class="row">
+                                        <!-- Category & Title -->
+                                        <h5 class="card-title mb-1">
 
-                        <!-- Grid column -->
-                        <div class="col-lg-12 col-md-12 mb-4">
+                                            <strong>
 
-                            <!-- Card -->
-                            <div class="card card-ecommerce cascade wider">
+                                                <a href="" class="dark-grey-text"><%= restaurant.name %></a>
 
-                                <!-- Card image -->
-                                <div class="view view-cascade overlay">
+                                            </strong>
 
-                                    <img class="card-img-top"
-                                         src="data:<%= restaurant.photo_mimetype %>;base64,<%= restaurant.photo %>"
-                                         alt="">
+                                        </h5>
 
-                                    <a>
+                                        <strong><%= restaurant.borough %></strong>
 
-                                        <div class="mask rgba-white-slight"></div>
+                                        <p><span class="badge badge-danger mb-0"><%= restaurant.cuisine %></span></p>
 
-                                    </a>
+                                        <div class="row mb-0">
 
-                                </div>
-                                <!-- Card image -->
+                                            <div class="col-8">
+                                                <!-- Rating -->
+                                              <%
+                                                let rated = false;
+                                                let score = 0;
+                                                restaurant.grades.forEach(function (value, index, array) {
+                                                  if (value.user==session.userid){
+                                                    if (value.score!=null){
+                                                      rated=true;
+                                                      if (score==0){
+                                                        score = value.score;
+                                                      }else{
+                                                        score = (parseFloat(score)+parseFloat(value.score))/2;
+                                                      }
+                                                    }
+                                                  }
+                                                });
+                                                if (rated==false){
+                                              %>
+                                                <form id="score_form" action="/api/restaurant/rate/restaurant_id/<%= restaurant.restaurant_id %>" method="post">
+                                                    <div class="form-group form-inline">
+                                                        <label for="score_slider"
+                                                               class="col-sm-2 col-form-label">Rate: </label>
+                                                        <span class="font-weight-bold indigo-text mr-2 mt-1">1</span>
+                                                      <span class="range-field w-25">
+                                                        <input class="border-0" type="range" min="1" max="10" name="score"
+                                                               id="score_slider"/>
+                                                      </span>
+                                                        <span class="font-weight-bold indigo-text ml-2 mt-1">10</span>
+                                                      <a class="btn-floating btn-sm btn-secondary" id="score_button" onclick="rate()"><i class="fas fa-check"></i></a>
+                                                    </div>
+                                                </form>
+                                                <% }else{ %>
+                                                <label for="score_slider"
+                                                       class="col-sm-2 col-form-label">Rate: </label>
+                                                <label><%=score %></label>
+                                              <%}%>
+                                                <!--                                            <ul class="rating">-->
 
-                                <!-- Card content -->
-                                <div class="card-body">
+                                                <!--                                                <li>-->
 
-                                    <!-- Category & Title -->
-                                    <h5 class="card-title mb-1">
+                                                <!--                                                    <i class="fas fa-star blue-text"></i>-->
 
-                                        <strong>
+                                                <!--                                                </li>-->
 
-                                            <a href="" class="dark-grey-text"><%= restaurant.name %></a>
+                                                <!--                                                <li>-->
 
-                                        </strong>
+                                                <!--                                                    <i class="fas fa-star blue-text"></i>-->
 
-                                    </h5>
+                                                <!--                                                </li>-->
 
-                                    <strong><%= restaurant.borough %></strong>
+                                                <!--                                                <li>-->
 
-                                    <p><span class="badge badge-danger mb-0"><%= restaurant.cuisine %></span></p>
+                                                <!--                                                    <i class="fas fa-star blue-text"></i>-->
 
-                                    <div class="row mb-0">
+                                                <!--                                                </li>-->
 
-                                        <div class="col-8">
-                                            <!-- Rating -->
-                                            <ul class="rating">
+                                                <!--                                                <li>-->
 
-                                                <li>
+                                                <!--                                                    <i class="fas fa-star blue-text"></i>-->
 
-                                                    <i class="fas fa-star blue-text"></i>
+                                                <!--                                                </li>-->
 
-                                                </li>
+                                                <!--                                                <li>-->
 
-                                                <li>
+                                                <!--                                                    <i class="fas fa-star blue-text"></i>-->
 
-                                                    <i class="fas fa-star blue-text"></i>
+                                                <!--                                                </li>-->
 
-                                                </li>
+                                                <!--                                            </ul>-->
+                                            </div>
 
-                                                <li>
-
-                                                    <i class="fas fa-star blue-text"></i>
-
-                                                </li>
-
-                                                <li>
-
-                                                    <i class="fas fa-star blue-text"></i>
-
-                                                </li>
-
-                                                <li>
-
-                                                    <i class="fas fa-star blue-text"></i>
-
-                                                </li>
-
-                                            </ul>
-                                        </div>
-
-                                        <div class="col-4">
+                                            <div class="col-4">
 
                       <span class="float-right">
 
                         <a class="" data-toggle="tooltip" data-placement="top" title="Score">
                           <i class="fas fa-star ml-3"></i>
                         </a>
-                        <a class="" data-toggle="tooltip" data-placement="top" title="Edit" href="/restaurant/update/restaurant_id/<%=restaurant.restaurant_id%>">
+                        <a class="" data-toggle="tooltip" data-placement="top" title="Edit"
+                           href="/restaurant/update/restaurant_id/<%= restaurant.restaurant_id %>">
                           <i class="fas fa-edit"></i>
                         </a>
-                        <a class="" data-toggle="tooltip" data-placement="top" title="Edit" onclick="delete_restaurant('/api/restaurant/restaurant_id/<%=restaurant.restaurant_id%>')">
+                        <a class="" data-toggle="tooltip" data-placement="top" title="Edit"
+                           onclick="delete_restaurant('/api/restaurant/restaurant_id/<%= restaurant.restaurant_id %>')">
                          <i class="fas fa-trash"></i>
                         </a>
 
                       </span>
-                                        </div>
-                                    </div>
-                                    <!-- Card footer -->
-                                    <div class="card-footer pb-0">
-
-                                        <% if (restaurant.address.coord) { %>
-                                            <!--Google map-->
-                                            <div id="map-container-google-9" class="z-depth-1-half map-container-5"
-                                                 style="height: 300px">
-                                                <iframe src="https://maps.google.com/maps?q=麥當勞&t=&z=13&ie=UTF8&iwloc=&output=embed"
-                                                        frameborder="0" style="border:0;width: 100%;height: 100%;"
-                                                        allowfullscreen></iframe>
                                             </div>
+                                        </div>
+                                        <!-- Card footer -->
+                                        <div class="card-footer pb-0">
 
-                                        <% } %>
+                                            <% if (restaurant.address.coord&& restaurant.address.coord.length>0) { %>
+                                                <!--Google map-->
+                                                <div id="map-container-google-9" class="z-depth-1-half map-container-5"
+                                                     style="height: 300px">
+                                                    <iframe src="https://maps.google.com/maps?q=<%=restaurant.address.coord%>&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                                                            frameborder="0" style="border:0;width: 100%;height: 100%;"
+                                                            allowfullscreen></iframe>
+                                                </div>
 
-                                        <% if (restaurant.address.street && restaurant.address.building) { %>
-                                            <p class="mt-3">
-                                                Address: <%= restaurant.address.street %> <%= restaurant.address.building %>
-                                                <%= (restaurant.address.zipcode) ? '(' + restaurant.address.zipcode + ')' : ''; %></p>
-                                        <% } %>
-                                    </div>
-                                </div> <!-- Card content -->
+                                            <% } %>
+
+                                            <% if (restaurant.address.street && restaurant.address.building) { %>
+                                                <p class="mt-3">
+                                                    Address: <%= restaurant.address.street %> <%= restaurant.address.building %>
+                                                    <%= (restaurant.address.zipcode) ? '(' + restaurant.address.zipcode + ')' : ''; %></p>
+                                            <% } %>
+                                        </div>
+                                    </div> <!-- Card content -->
+                                </div>
+
+                                <!-- Card -->
                             </div>
+                            <!-- Grid column -->
 
-                            <!-- Card -->
+
                         </div>
-                        <!-- Grid column -->
+                        <!-- Grid row -->
+                    <% }) %>
 
-
-                    </div>
                     <!-- Grid row -->
-                <% }) %>
+                    <!-- <div class="row justify-content-center mb-4">
 
-                <!-- Grid row -->
-                <!-- <div class="row justify-content-center mb-4">
+                      <nav class="mb-4">
 
-                  <nav class="mb-4">
+                        <ul class="pagination pagination-circle pg-blue mb-0">
 
-                    <ul class="pagination pagination-circle pg-blue mb-0">
+                          <li class="page-item disabled clearfix d-none d-md-block">
 
-                      <li class="page-item disabled clearfix d-none d-md-block">
+                            <a class="page-link waves-effect waves-effect">First</a>
 
-                        <a class="page-link waves-effect waves-effect">First</a>
+                          </li>
 
-                      </li>
+                          <li class="page-item disabled">
 
-                      <li class="page-item disabled">
+                            <a class="page-link waves-effect waves-effect" aria-label="Previous">
 
-                        <a class="page-link waves-effect waves-effect" aria-label="Previous">
+                              <span aria-hidden="true">«</span>
 
-                          <span aria-hidden="true">«</span>
+                              <span class="sr-only">Previous</span>
 
-                          <span class="sr-only">Previous</span>
+                            </a>
 
-                        </a>
+                          </li>
 
-                      </li>
+                          <li class="page-item active">
 
-                      <li class="page-item active">
+                            <a class="page-link waves-effect waves-effect">1</a>
 
-                        <a class="page-link waves-effect waves-effect">1</a>
+                          </li>
 
-                      </li>
+                          <li class="page-item">
 
-                      <li class="page-item">
+                            <a class="page-link waves-effect waves-effect">2</a>
 
-                        <a class="page-link waves-effect waves-effect">2</a>
+                          </li>
 
-                      </li>
+                          <li class="page-item">
 
-                      <li class="page-item">
+                            <a class="page-link waves-effect waves-effect">3</a>
 
-                        <a class="page-link waves-effect waves-effect">3</a>
+                          </li>
 
-                      </li>
+                          <li class="page-item">
 
-                      <li class="page-item">
+                            <a class="page-link waves-effect waves-effect">4</a>
 
-                        <a class="page-link waves-effect waves-effect">4</a>
+                          </li>
 
-                      </li>
+                          <li class="page-item">
 
-                      <li class="page-item">
+                            <a class="page-link waves-effect waves-effect">5</a>
 
-                        <a class="page-link waves-effect waves-effect">5</a>
+                          </li>
 
-                      </li>
+                          <li class="page-item">
 
-                      <li class="page-item">
+                            <a class="page-link waves-effect waves-effect" aria-label="Next">
 
-                        <a class="page-link waves-effect waves-effect" aria-label="Next">
+                              <span aria-hidden="true">»</span>
 
-                          <span aria-hidden="true">»</span>
+                              <span class="sr-only">Next</span>
 
-                          <span class="sr-only">Next</span>
+                            </a>
 
-                        </a>
+                          </li>
 
-                      </li>
+                          <li class="page-item clearfix d-none d-md-block">
 
-                      <li class="page-item clearfix d-none d-md-block">
+                            <a class="page-link waves-effect waves-effect">Last</a>
 
-                        <a class="page-link waves-effect waves-effect">Last</a>
+                          </li>
 
-                      </li>
+                        </ul>
 
-                    </ul>
+                      </nav>
 
-                  </nav>
+                    </div> -->
+                    <!-- Grid row -->
 
-                </div> -->
-                <!-- Grid row -->
+                </section>
+                <!-- Products Grid -->
 
-            </section>
-            <!-- Products Grid -->
+            </div>
+            <!-- Content -->
 
         </div>
-        <!-- Content -->
 
     </div>
-
-</div>
 </main>
 <!-- Main Container -->
 <% include footer.ejs %>
 <!--Modal: modalConfirmDelete-->
 <div class="modal fade" id="modalConfirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
-  <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
-    <!--Content-->
-    <div class="modal-content text-center">
-      <!--Header-->
-      <div class="modal-header d-flex justify-content-center">
-        <p class="heading">Are you sure to delete this restaurant?</p>
-        <input type="hidden" id="delete_restaurant_url">
-      </div>
+    <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+        <!--Content-->
+        <div class="modal-content text-center">
+            <!--Header-->
+            <div class="modal-header d-flex justify-content-center">
+                <p class="heading">Are you sure to delete this restaurant?</p>
+                <input type="hidden" id="delete_restaurant_url">
+            </div>
 
-      <!--Body-->
-      <div class="modal-body">
+            <!--Body-->
+            <div class="modal-body">
 
-        <i class="fas fa-times fa-4x animated rotateIn"></i>
+                <i class="fas fa-times fa-4x animated rotateIn"></i>
 
-      </div>
+            </div>
 
-      <!--Footer-->
-      <div class="modal-footer flex-center">
-        <a onclick="confirm_delete_restaurant()" class="btn  btn-outline-danger">Yes</a>
-        <a type="button" class="btn  btn-danger waves-effect" data-dismiss="modal">No</a>
-      </div>
+            <!--Footer-->
+            <div class="modal-footer flex-center">
+                <a onclick="confirm_delete_restaurant()" class="btn  btn-outline-danger">Yes</a>
+                <a type="button" class="btn  btn-danger waves-effect" data-dismiss="modal">No</a>
+            </div>
+        </div>
+        <!--/.Content-->
     </div>
-    <!--/.Content-->
-  </div>
 </div>
 <!--Modal: modalConfirmDelete-->
 <script>
-  function delete_restaurant(url){
-    $("#delete_restaurant_url").val(url);
-    $('#modalConfirmDelete').modal("show");
-  }
-  function confirm_delete_restaurant() {
-    var url = $("#delete_restaurant_url").val();
-    $.ajax({
-      type: "DELETE",
-      url: url,
-      success: function(data)
-      {
-        // location.reload();
-        window.location.href =  "/?success="+encodeURI("Delete Restaurant Successful") ;
-      },
-    })
+    function delete_restaurant(url) {
+        $("#delete_restaurant_url").val(url);
+        $('#modalConfirmDelete').modal("show");
+    }
 
-  }
+    function confirm_delete_restaurant() {
+        var url = $("#delete_restaurant_url").val();
+        $.ajax({
+            type: "DELETE",
+            url: url,
+            success: function (data) {
+                // location.reload();
+                window.location.href = "/?success=" + encodeURI("Delete Restaurant Successful");
+            },
+        })
+
+    }
+
+    function rate() {
+      $("#score_button").prop("disabled", true);
+      $("#score_button").html("<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>");
+      $("#score_form").submit(function(e) {
+
+        var form = $(this);
+        var url = form.attr('action');
+        console.log(form.serialize());
+
+        $.ajax({
+          type: "POST",
+          url: url,
+          data: form.serialize(), // serializes the form's elements.
+          success: function(data)
+          {
+            // location.reload();
+            window.location.href = window.location.href.replace( /[\?#].*|$/, "?success=Rate%20Success" );
+          },
+        })
+
+        e.preventDefault(); // avoid to execute the actual submit of the form.
+      });
+      $("#score_form").submit();
+    }
 </script>
 </body>
 
