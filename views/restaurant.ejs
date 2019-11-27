@@ -173,16 +173,18 @@
                                                   }
                               
                                                   function genStar(score) {
+
+                                                    const rating = round5(score / 2); // 5/2 = 2.5
                               
                                                     let star = 0;
                               
-                                                    for ( i = 5 - Math.floor(score); i < 5; i += 1 ) {
+                                                    for ( i = 5 - Math.floor(rating); i < 5; i += 1 ) {
                                                       star += 1;
                                                       %><i class="py-2 px-1 rate-popover fas fa-star amber-text" data-index="0" data-html="true" ></i><%
                               
                                                     }
                               
-                                                    if ((score - Math.floor(score)) === 0.5 ) {
+                                                    if ((rating - Math.floor(rating)) === 0.5 ) {
                                                       star += 1;
                                                       %><i class="py-2 px-1 rate-popover fas fa-star-half amber-text" data-index="0" data-html="true" ></i><%
                                                     
@@ -196,7 +198,7 @@
                                                   %>
                                                   <!-- <span for=""
                                                          class="">Rate: <%= round5(score/2) %></span> -->
-                                                  <span data-toggle="tooltip" data-placement="top" title="Average rating: <%=round5(score)%>" ><%= genStar(round5(score/2)) %></span>
+                                                         <span data-toggle="tooltip" data-placement="top" title="Average rating: <%=Math.round(score)%>" ><%= genStar(Math.round(score)) %></span>
                                                   <span></span>
                                                 <!-- <label for="score_slider"
                                                        class="col-sm-2 col-form-label">Rate: </label>
