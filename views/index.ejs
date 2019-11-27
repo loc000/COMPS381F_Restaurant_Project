@@ -122,8 +122,12 @@
                           rated=true;
                         }
                       }
-                      if (value.user && value.score){
-                        score = (parseFloat(score)+parseFloat(value.score))/2;
+                      if (value.score!=null) {
+                        if (score == 0) {
+                          score = value.score;
+                        } else {
+                          score = (parseFloat(score) + parseFloat(value.score)) / 2;
+                        }
                       }
                     });
 

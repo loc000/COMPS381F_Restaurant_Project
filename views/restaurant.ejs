@@ -141,16 +141,20 @@
                                               <%
                                                 let rated = false;
                                                 let score = 0;
-                                                restaurant.grades.forEach(function (value, index2) {
-                                                  if (value.user && session.userid && value.user==session.userid){
-                                                    if (value.score!=null){
-                                                      rated=true;
-                                                    }
-                                                  }
-                                                  if (value.user && value.score){
-                                                    score = (parseFloat(score)+parseFloat(value.score))/2;
-                                                  }
-                                                });
+                                                  restaurant.grades.forEach(function (value, index2) {
+                                                      if (value.user && session.userid && value.user==session.userid){
+                                                          if (value.score!=null){
+                                                              rated=true;
+                                                          }
+                                                      }
+                                                      if (value.score!=null) {
+                                                          if (score == 0) {
+                                                              score = value.score;
+                                                          } else {
+                                                              score = (parseFloat(score) + parseFloat(value.score)) / 2;
+                                                          }
+                                                      }
+                                                  });
                                                 if (!rated && session.userid){
                                               %>
                                                 <form id="score_form" action="/api/restaurant/rate/restaurant_id/<%= restaurant.restaurant_id %>" method="post">
