@@ -151,7 +151,7 @@
                                                     }
                                                   }
                                                 });
-                                                if (rated==false){
+                                                if (rated==false && session.usid!=null){
                                               %>
                                                 <form id="score_form" action="/api/restaurant/rate/restaurant_id/<%= restaurant.restaurant_id %>" method="post">
                                                     <div class="form-group form-inline">
