@@ -62,7 +62,9 @@
 
                     </div>
 
-                    <div class="col-8 col-md-8 text-right">
+                    <div class="col-8 col-md-8 text-left">
+
+                      
                         <!--
                         <a class="btn blue darken-3 btn-sm">
 
@@ -139,19 +141,17 @@
                                               <%
                                                 let rated = false;
                                                 let score = 0;
-                                                restaurant.grades.forEach(function (value, index, array) {
-                                                  if (value.user==session.userid){
+                                                restaurant.grades.forEach(function (value, index2) {
+                                                  if (value.user && session.userid && value.user==session.userid){
                                                     if (value.score!=null){
                                                       rated=true;
-                                                      if (score==0){
-                                                        score = value.score;
-                                                      }else{
-                                                        score = (parseFloat(score)+parseFloat(value.score))/2;
-                                                      }
                                                     }
                                                   }
+                                                  if (value.user && value.score){
+                                                    score = (parseFloat(score)+parseFloat(value.score))/2;
+                                                  }
                                                 });
-                                                if (rated==false && session.usid!=null){
+                                                if (!rated && session.userid){
                                               %>
                                                 <form id="score_form" action="/api/restaurant/rate/restaurant_id/<%= restaurant.restaurant_id %>" method="post">
                                                     <div class="form-group form-inline">
@@ -166,11 +166,42 @@
                                                       <a class="btn-floating btn-sm btn-secondary" id="score_button" onclick="rate()"><i class="fas fa-check"></i></a>
                                                     </div>
                                                 </form>
-                                                <% }else{ %>
-                                                <label for="score_slider"
+                                                <% }
+                                                  function round5(x)
+                                                  {
+                                                      return Math.round(x*2)/2;
+                                                  }
+                              
+                                                  function genStar(score) {
+                              
+                                                    let star = 0;
+                              
+                                                    for ( i = 5 - Math.floor(score); i < 5; i += 1 ) {
+                                                      star += 1;
+                                                      %><i class="py-2 px-1 rate-popover fas fa-star amber-text" data-index="0" data-html="true" ></i><%
+                              
+                                                    }
+                              
+                                                    if ((score - Math.floor(score)) === 0.5 ) {
+                                                      star += 1;
+                                                      %><i class="py-2 px-1 rate-popover fas fa-star-half amber-text" data-index="0" data-html="true" ></i><%
+                                                    
+                                                    }
+                              
+                                                    for ( i = star ; i < 5 ; i += 1 ) {
+                                                      %><i class="py-2 px-1 rate-popover fas fa-star grey-text" data-index="0" data-html="true" ></i><%
+                                                    }
+                              
+                                                  }
+                                                  %>
+                                                  <!-- <span for=""
+                                                         class="">Rate: <%= round5(score/2) %></span> -->
+                                                  <span data-toggle="tooltip" data-placement="top" title="Average rating: <%=round5(score/2)%>" ><%= genStar(round5(score/2)) %></span>
+                                                  <span></span>
+                                                <!-- <label for="score_slider"
                                                        class="col-sm-2 col-form-label">Rate: </label>
-                                                <label><%=score %></label>
-                                              <%}%>
+                                                <label><%=score %></label> -->
+                                              
                                                 <!--                                            <ul class="rating">-->
 
                                                 <!--                                                <li>-->

@@ -269,15 +269,17 @@ router.get('/search/:name', function (req, res, next) {
 });
 
 router.post('/rate/restaurant_id/:restaurant_id', function (req, res) {
-
-    module.exports.update(req, {restaurant_id: ObjectID(req.params.restaurant_id)}, {
-        $push: {
-            grades: {
-                user: req.session.userid,
-                score: req.body.score
+    if (req.session.userid)
+        module.exports.update(req, {restaurant_id: ObjectID(req.params.restaurant_id)}, {
+            $push: {
+                grades: {
+                    user: req.session.userid,
+                    score: req.body.score
+                }
             }
-        }
-    }, function (restaurant_array) {
-        res.end(JSON.stringify(restaurant_array));
-    });
+        }, function (restaurant_array) {
+            res.end(JSON.stringify(restaurant_array));
+        });
+    else
+        res.end('false');
 });

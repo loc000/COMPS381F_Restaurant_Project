@@ -19,11 +19,27 @@ exports.find_with_field = function (req, query, callback) {
   });
 };
 
+// Retrieve and return all notes from the database.
+module.exports.search = function (req, keyword, callback) {
+  // req.db.collection("restaurant").getIndexes().toArray(function (err,res2) {
+  //     req.db.collection("restaurant").dropIndex("post_text_text")
+  // });
+  req.db.collection("restaurant").createIndex({
+      "$**": "text",
+  }, {name: "index"});
+  req.db.collection("restaurant").find({
+          $text: {$search:keyword},
+  }).toArray(function (err, res2) {
+      if (err) throw err;
+      callback(res2);
+  });
+};
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   exports.findAll(req, function (restaurant_array) {
     //res.json(restaurant_array);
-    res.render('index', { title: 'Restaurants Collection',restaurants: restaurant_array });
+    res.render('index', { title: 'Restaurants Collection',restaurants: restaurant_array, search: false });
   });
 });
 
@@ -33,6 +49,13 @@ router.get('/restaurant/name/:name', function (req, res, next) {
         res.render('restaurant', { title: 'Restaurants Collection',restaurants: restaurant_array });
     });
 });
+
+router.get('/restaurant/search/:name', function (req, res, next) {
+  exports.search(req, req.params.name, function (restaurant_array) {
+    res.render('index', { title: 'Restaurants Collection',restaurants: restaurant_array, search: true, keyword:req.params.name });
+  });
+});
+
 router.get('/restaurant/restaurant_id/:id', function (req, res, next) {
     exports.find_with_field(req, {restaurant_id:  new ObjectId(req.params.id)}, function (restaurant_array) {
         //res.end(JSON.stringify(restaurant_array));

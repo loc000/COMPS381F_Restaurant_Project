@@ -45,17 +45,22 @@
 
             <div class="md-form">
               <i class="fas fa-search prefix"></i>
-              <input type="text" id="inputIconEx2" class="form-control">
+              <input type="text" id="search" class="form-control">
               <label for="inputIconEx2">Name, borough, cuisine, borough, etc</label>
             </div>
 
           </div>
 
           <div class="col-2">
-            <a class="nav-link waves-effect waves-light white-text font-weight-bold btn btn-info" href="#">
+            <a class="nav-link waves-effect waves-light white-text font-weight-bold btn btn-info" href="#" onclick="window.location.href = '/restaurant/search/' + document.getElementById('search').value">
               Search</a>
 
           </div>
+
+          <% if (search) { %>
+            <div class="col-12"><span>There are <%=restaurants.length%> result(s) of keywords: <%=keyword%> </span></div>
+            
+            <% } %>
 
         </div>
 
@@ -108,24 +113,51 @@
                   <!-- Rating -->
                   <ul class="rating">
                     <%
-                      let rated = false;
-                      let score = 0;
-                      restaurant.grades.forEach(function (value, index, array) {
-                        if (value.user==session.userid){
-                          if (value.score!=null){
-                            rated=true;
-                            if (score==0){
-                              score = value.score;
-                            }else{
-                              score = (parseFloat(score)+parseFloat(value.score))/2;
-                            }
-                          }
+
+                    let rated = false;
+                    let score = 0;
+                    restaurant.grades.forEach(function (value, index2) {
+                      if (value.user && session.userid && value.user==session.userid){
+                        if (value.score!=null){
+                          rated=true;
                         }
-                      });
+                      }
+                      if (value.user && value.score){
+                        score = (parseFloat(score)+parseFloat(value.score))/2;
+                      }
+                    });
+
+                    function round5(x)
+                    {
+                        return Math.round(x*2)/2;
+                    }
+
+                    function genStar(score) {
+
+                      let star = 0;
+
+                      for ( i = 5 - Math.floor(score); i < 5; i += 1 ) {
+                        star += 1;
+                        %><i class="py-2 px-1 rate-popover fas fa-star amber-text" data-index="0" data-html="true" ></i><%
+
+                      }
+
+                      if ((score - Math.floor(score)) === 0.5 ) {
+                        star += 1;
+                        %><i class="py-2 px-1 rate-popover fas fa-star-half amber-text" data-index="0" data-html="true" ></i><%
+                      
+                      }
+
+                      for ( i = star ; i < 5 ; i += 1 ) {
+                        %><i class="py-2 px-1 rate-popover fas fa-star grey-text" data-index="0" data-html="true" ></i><%
+                      }
+
+                    }
  %>
-                    <span for=""
-                           class="">Rate: </span>
-                    <span><%=score %></span>
+                    <!-- <span for=""
+                           class="">Rate: <%= round5(score/2) %></span> -->
+                    <span data-toggle="tooltip" data-placement="top" title="Average rating: <%=round5(score/2)%>" ><%= genStar(round5(score/2)) %></span>
+                    <span></span>
 <!--                    <li>-->
 
 <!--                      <i class="fas fa-star blue-text"></i>-->
