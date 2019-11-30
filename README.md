@@ -1,11 +1,13 @@
 "# COMPS381F_Restaurant_Project"   
 **Testing Curl:**  
 Insert:  
-curl -H "Content-Type: application/json" -X POST -d '{"name":"381F","owner":"Ramond So"}' 127.0.0.1:5000/api/restaurant  
-curl -H "Content-Type: application/json" -X POST -d '{"name":"382F","owner":"Ramond So","borough":"Kwon Tong","cuisine":"Water","address":{"street":"Kwon Tong Street","building":"APM","zipcode":"00852","coord":"22.3124573,114.2236401"}}' 127.0.0.1:5000/api/restaurant  
+curl -H "Content-Type: application/json" -X POST -d '{"name":"381F","owner":"demo01"}' https://comps381f-restaurant-project.herokuapp.com/api/restaurant  
+curl -H "Content-Type: application/json" -X POST -d '{"name":"382F","owner":"demo02","borough":"Kwon Tong","cuisine":"Water","address":{"street":"Kwon Tong Street","building":"APM","zipcode":"00852","coord":"22.3124573,114.2236401"}}' https://comps381f-restaurant-project.herokuapp.com/api/restaurant  
 Insert Fail:   
-curl -H "Content-Type: application/json" -X POST -d '{"name":"381F"}' 127.0.0.1:5000/api/restaurant     
+curl -H "Content-Type: application/json" -X POST -d '{"name":"381F"}' https://comps381f-restaurant-project.herokuapp.com/api/restaurant     
 Get All Restaurant:
-curl -X GET 127.0.0.1:5000/api/restaurant/  
+curl -X GET https://comps381f-restaurant-project.herokuapp.com/api/restaurant/  
 Get name start equal to 381F:
-curl -X GET 127.0.0.1:5000/api/restaurant/name/381F
+curl -X GET https://comps381f-restaurant-project.herokuapp.com/api/restaurant/name/381F
+curl -X GET https://comps381f-restaurant-project.herokuapp.com/api/restaurant/borough/Kwon%20Tong
+curl -X GET https://comps381f-restaurant-project.herokuapp.com/api/restaurant/cuisine/Water
