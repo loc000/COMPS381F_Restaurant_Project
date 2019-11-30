@@ -276,6 +276,29 @@ router.get('/cuisine/:name', function (req, res) {
         res.end(JSON.stringify(restaurant_array));
     });
 });
+//Rubbish Test Case
+router.get('/read/name/:name', function (req, res) {
+    module.exports.find_with_field(req, {name: req.params.name}, function (restaurant_array) {
+        res.end(JSON.stringify(restaurant_array));
+    });
+});
+router.get('/read/name/:name', function (req, res) {
+    module.exports.find_with_field(req, {name: req.params.name}, function (restaurant_array) {
+        res.end(JSON.stringify(restaurant_array));
+    });
+});
+router.get('/read/borough/:name', function (req, res) {
+    module.exports.find_with_field(req, {borough: req.params.name}, function (restaurant_array) {
+        res.end(JSON.stringify(restaurant_array));
+    });
+});
+router.get('/read/cuisine/:name', function (req, res) {
+    module.exports.find_with_field(req, {cuisine: req.params.name}, function (restaurant_array) {
+        res.end(JSON.stringify(restaurant_array));
+    });
+});
+//Rubbish Test Case
+
 router.get('/search/:name', function (req, res, next) {
     console.log(req.params.name);
     module.exports.search(req, req.params.name, function (restaurant_array) {
