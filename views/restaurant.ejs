@@ -202,7 +202,7 @@
                                                   %>
                                                   <!-- <span for=""
                                                          class="">Rate: <%= round5(score/2) %></span> -->
-                                                         <span data-toggle="tooltip" data-placement="top" title="Average rating: <%=Math.round(score)%>" ><%= genStar(Math.round(score)) %></span>
+                                                         <span data-toggle="tooltip" data-placement="top" title="Average score: <%=Math.round(score)%>" ><%= genStar(Math.round(score)) %></span>
                                                   <span></span>
                                                 <!-- <label for="score_slider"
                                                        class="col-sm-2 col-form-label">Rate: </label>
@@ -250,14 +250,16 @@
 <!--                        <a class="" data-toggle="tooltip" data-placement="top" title="Score">-->
 <!--                          <i class="fas fa-star ml-3"></i>-->
 <!--                        </a>-->
-                        <a class="" data-toggle="tooltip" data-placement="top" title="Edit"
+                        <% if (restaurant.owner === session.userid) { %>
+                        <a class="blue-text" data-toggle="tooltip" data-placement="top" title="Edit"
                            href="/restaurant/update/restaurant_id/<%= restaurant.restaurant_id %>">
                           <i class="fas fa-edit"></i>
                         </a>
-                        <a class="" data-toggle="tooltip" data-placement="top" title="Edit"
+                        <a class="red-text" data-toggle="tooltip" data-placement="top" title="Delete"
                            onclick="delete_restaurant('/api/restaurant/restaurant_id/<%= restaurant.restaurant_id %>')">
                          <i class="fas fa-trash"></i>
                         </a>
+                        <% } %>
 
                       </span>
                                             </div>
