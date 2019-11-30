@@ -256,8 +256,23 @@ router.put('/', function (req, res) {
     }
 });
 
-router.get('//:name', function (req, res, next) {
+router.get('/name/:name', function (req, res) {
     module.exports.find_with_field(req, {name: req.params.name}, function (restaurant_array) {
+        res.end(JSON.stringify(restaurant_array));
+    });
+});
+router.get('/name/:name', function (req, res) {
+    module.exports.find_with_field(req, {name: req.params.name}, function (restaurant_array) {
+        res.end(JSON.stringify(restaurant_array));
+    });
+});
+router.get('/borough/:name', function (req, res) {
+    module.exports.find_with_field(req, {borough: req.params.name}, function (restaurant_array) {
+        res.end(JSON.stringify(restaurant_array));
+    });
+});
+router.get('/cuisine/:name', function (req, res) {
+    module.exports.find_with_field(req, {cuisine: req.params.name}, function (restaurant_array) {
         res.end(JSON.stringify(restaurant_array));
     });
 });
