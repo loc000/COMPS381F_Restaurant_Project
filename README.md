@@ -1,4 +1,6 @@
 "# COMPS381F_Restaurant_Project"   
+Github Link: https://github.com/loc000/COMPS381F_Restaurant_Project/
+Demo Server Link: https://comps381f-restaurant-project.herokuapp.com/
 **Testing Curl:**  
 Insert:  
 curl -H "Content-Type: application/json" -X POST -d '{"name":"381F","owner":"demo01"}' https://comps381f-restaurant-project.herokuapp.com/api/restaurant  
